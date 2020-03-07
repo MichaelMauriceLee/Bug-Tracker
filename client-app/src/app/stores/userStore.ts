@@ -58,23 +58,4 @@ export default class UserStore {
     this.user = null;
     history.push('/');
   };
-
-  @action fbLogin = async (response: any) => {
-    this.loading = true;
-    try {
-      const user = await agent.User.fbLogin(response.accessToken);
-      runInAction(() => {
-        this.user = user;
-        this.rootStore.commonStore.setToken(user.token);
-        this.rootStore.modalStore.closeModal();
-        this.loading = false;
-      })
-      history.push('/activities');
-    } catch (error) {
-      runInAction(() => {
-        this.loading = false;
-        throw error;
-      })
-    }
-  }
 }
