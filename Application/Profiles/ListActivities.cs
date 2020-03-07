@@ -36,19 +36,19 @@ namespace Application.Profiles
                     throw new RestException(HttpStatusCode.NotFound, new { User = "Not found" });
 
                 var queryable = user.UserActivities
-                    .OrderBy(a => a.Activity.Date)
+                    .OrderBy(a => a.Ticket.Date)
                     .AsQueryable();
 
                 switch (request.Predicate)
                 {
                     case "past":
-                        queryable = queryable.Where(a => a.Activity.Date <= DateTime.Now);
+                        queryable = queryable.Where(a => a.Ticket.Date <= DateTime.Now);
                         break;
                     case "hosting":
                         queryable = queryable.Where(a => a.IsHost);
                         break;
                     default:
-                        queryable = queryable.Where(a => a.Activity.Date >= DateTime.Now);
+                        queryable = queryable.Where(a => a.Ticket.Date >= DateTime.Now);
                         break;
                 }
 
@@ -59,10 +59,10 @@ namespace Application.Profiles
                 {
                     var userActivity = new UserActivityDto
                     {
-                        Id = activity.Activity.Id,
-                        Title = activity.Activity.Title,
-                        Category = activity.Activity.Category,
-                        Date = activity.Activity.Date
+                        Id = activity.Ticket.Id,
+                        Title = activity.Ticket.Title,
+                        Category = activity.Ticket.Category,
+                        Date = activity.Ticket.Date
                     };
 
                     activitiesToReturn.Add(userActivity);

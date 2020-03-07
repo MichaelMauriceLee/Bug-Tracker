@@ -48,7 +48,7 @@ namespace Application.Activities
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = new Activity
+                var activity = new Ticket
                 {
                     Id = request.Id,
                     Title = request.Title,
@@ -67,7 +67,7 @@ namespace Application.Activities
                 var attendee = new UserActivity
                 {
                     AppUser = user,
-                    Activity = activity,
+                    Ticket = activity,
                     IsHost = true,
                     DateJoined = DateTime.Now
                 };

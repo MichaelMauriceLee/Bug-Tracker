@@ -36,7 +36,7 @@ namespace Application.Activities
                 if (activity == null)
                     throw new RestException(HttpStatusCode.NotFound, new { Activity = "Not found" });
 
-                var activityToReturn = _mapper.Map<Activity, ActivityDto>(activity);
+                var activityToReturn = _mapper.Map<Ticket, ActivityDto>(activity);
 
                 return activityToReturn;
             }

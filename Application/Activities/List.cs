@@ -71,7 +71,7 @@ namespace Application.Activities
 
                 return new ActivitiesEnvelope
                 {
-                    Activities = _mapper.Map<List<Activity>, List<ActivityDto>>(activities),
+                    Activities = _mapper.Map<List<Ticket>, List<ActivityDto>>(activities),
                     ActivityCount = queryable.Count()
                 };
             }

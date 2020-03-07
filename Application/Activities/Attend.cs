@@ -48,7 +48,7 @@ namespace Application.Activities
 
                 attendance = new UserActivity
                 {
-                    Activity = activity,
+                    Ticket = activity,
                     AppUser = user,
                     IsHost = false,
                     DateJoined = DateTime.Now

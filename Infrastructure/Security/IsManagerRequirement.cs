@@ -26,13 +26,13 @@ namespace Infrastructure.Security
         {
             var currentUserName = _httpContextAccessor.HttpContext.User?.Claims?.SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            var activityId = Guid.Parse(_httpContextAccessor.HttpContext.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value.ToString());
+            var teamId = Guid.Parse(_httpContextAccessor.HttpContext.Request.RouteValues.SingleOrDefault(x => x.Key == "id").Value.ToString());
 
-            var activity = _context.Activities.FindAsync(activityId).Result;
+            var team = _context.Teams.FindAsync(teamId).Result;
 
-            var host = activity.UserActivities.FirstOrDefault(x => x.IsHost);
+            var manager = team.TeamMembers.FirstOrDefault(x => x.IsManager);
 
-            if (host?.AppUser?.UserName == currentUserName)
+            if (manager?.AppUser?.UserName == currentUserName)
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

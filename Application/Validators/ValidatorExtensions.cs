@@ -1,9 +1,14 @@
 using FluentValidation;
-
+/*
+ * This class extends the default validator class in order to put in extra rules
+ */
 namespace Application.Validators
 {
     public static class ValidatorExtensions
     {
+        /*
+         * Creates a new object used for validation against password entries
+         */
         public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             var options = ruleBuilder

@@ -42,7 +42,7 @@ namespace Application.Comments
                 var comment = new Comment
                 {
                     Author = user,
-                    Activity = activity,
+                    Ticket = activity,
                     Body = request.Body,
                     CreatedAt = DateTime.Now
                 };

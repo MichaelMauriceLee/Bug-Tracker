@@ -45,11 +45,11 @@ namespace Persistence
                 }
             }
 
-            if (!context.Activities.Any())
+            if (!context.Tickets.Any())
             {
-                var activities = new List<Activity>
+                var tickets = new List<Ticket>
                 {
-                    new Activity
+                    new Ticket
                     {
                         Title = "Past Activity 1",
                         Date = DateTime.Now.AddMonths(-2),
@@ -67,7 +67,7 @@ namespace Persistence
                             }
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Past Activity 2",
                         Date = DateTime.Now.AddMonths(-1),
@@ -91,7 +91,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 1",
                         Date = DateTime.Now.AddMonths(1),
@@ -115,7 +115,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 2",
                         Date = DateTime.Now.AddMonths(2),
@@ -139,7 +139,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 3",
                         Date = DateTime.Now.AddMonths(3),
@@ -163,7 +163,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 4",
                         Date = DateTime.Now.AddMonths(4),
@@ -181,7 +181,7 @@ namespace Persistence
                             }
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 5",
                         Date = DateTime.Now.AddMonths(5),
@@ -205,7 +205,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 6",
                         Date = DateTime.Now.AddMonths(6),
@@ -229,7 +229,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 7",
                         Date = DateTime.Now.AddMonths(7),
@@ -253,7 +253,7 @@ namespace Persistence
                             },
                         }
                     },
-                    new Activity
+                    new Ticket
                     {
                         Title = "Future Activity 8",
                         Date = DateTime.Now.AddMonths(8),
@@ -279,7 +279,7 @@ namespace Persistence
                     }
                 };
 
-                await context.Activities.AddRangeAsync(activities);
+                await context.Activities.AddRangeAsync(tickets);
                 await context.SaveChangesAsync();
             }
         }
