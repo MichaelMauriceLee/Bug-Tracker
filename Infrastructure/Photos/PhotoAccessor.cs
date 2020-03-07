@@ -5,7 +5,9 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-
+/*
+ * Class to get information from Cloudinary
+ */
 namespace Infrastructure.Photos
 {
     public class PhotoAccessor : IPhotoAccessor

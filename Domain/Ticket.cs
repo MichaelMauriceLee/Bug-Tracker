@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
-
+/*
+ * Entity
+ */
 namespace Domain
 {
     public class Ticket
@@ -21,6 +23,6 @@ namespace Domain
         public string AssigneeId { get; set; }
         public virtual AppUser Assignee { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
-        //add attachments later
+        //TODO add attachments later
     }
 }

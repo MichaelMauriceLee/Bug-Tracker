@@ -9,9 +9,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Activities
+/*
+ * Command object to add people to a team
+ */
+
+namespace Application.Teams
 {
-    public class Attend
+    public class Belong
     {
         public class Command : IRequest
         {
@@ -30,31 +34,30 @@ namespace Application.Activities
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.Id);
+                var team = await _context.Teams.FindAsync(request.Id);
 
-                if (activity == null)
-                    throw new RestException(HttpStatusCode.NotFound, new {Activity = "Cound not find activity"});
+                if (team == null)
+                    throw new RestException(HttpStatusCode.NotFound, new {Team = "Cound not find team"});
 
                 var user = await _context.Users.SingleOrDefaultAsync(x => 
                     x.UserName == _userAccessor.GetCurrentUsername());
 
-                var attendance = await _context.UserActivities
-                    .SingleOrDefaultAsync(x => x.ActivityId == activity.Id && 
+                var membership = await _context.TeamMembers
+                    .SingleOrDefaultAsync(x => x.TeamId == team.Id && 
                         x.AppUserId == user.Id);
 
-                if (attendance != null)
+                if (membership != null)
                     throw new RestException(HttpStatusCode.BadRequest, 
-                        new {Attendance = "Already attending this activity"});
+                        new {Attendance = "Already in this team"});
 
-                attendance = new UserActivity
+                membership = new TeamMember
                 {
-                    Ticket = activity,
+                    Team = team,
                     AppUser = user,
-                    IsHost = false,
-                    DateJoined = DateTime.Now
+                    IsManager = false,
                 };
 
-                _context.UserActivities.Add(attendance);
+                _context.TeamMembers.Add(membership);
 
                 var success = await _context.SaveChangesAsync() > 0;
 

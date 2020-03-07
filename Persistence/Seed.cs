@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Identity;
-
+/*
+ * Class to seed database with data if the data doesn't exist
+ */
 namespace Persistence
 {
     public class Seed
@@ -45,241 +47,182 @@ namespace Persistence
                 }
             }
 
-            if (!context.Tickets.Any())
+            if (!context.Teams.Any())
             {
-                var tickets = new List<Ticket>
+                var teams = new List<Team>
                 {
-                    new Ticket
+                    new Team
                     {
-                        Title = "Past Activity 1",
-                        Date = DateTime.Now.AddMonths(-2),
-                        Description = "Activity 2 months ago",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        UserActivities = new List<UserActivity>
+                        Name = "Team 1",
+                        Description = "Team 1 Description",
+                        TeamMembers = new List<TeamMember>
                         {
-                            new UserActivity
+                            new TeamMember
                             {
                                 AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(-2)
+                                IsManager = true
                             }
                         }
                     },
-                    new Ticket
+                    new Team
                     {
-                        Title = "Past Activity 2",
-                        Date = DateTime.Now.AddMonths(-1),
-                        Description = "Activity 1 month ago",
-                        Category = "culture",
-                        City = "Paris",
-                        Venue = "The Louvre",
-                        UserActivities = new List<UserActivity>
+                        Name = "Team 2",
+                        Description = "Team 2 Description",
+                        TeamMembers = new List<TeamMember>
                         {
-                            new UserActivity
+                            new TeamMember
                             {
                                 AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(-1)
+                                IsManager = true
                             },
-                            new UserActivity
+                            new TeamMember
                             {
                                 AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(-1)
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        Title = "Future Activity 1",
-                        Date = DateTime.Now.AddMonths(1),
-                        Description = "Activity 1 month in future",
-                        Category = "music",
-                        City = "London",
-                        Venue = "Wembly Stadium",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(1)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(1)
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        Title = "Future Activity 2",
-                        Date = DateTime.Now.AddMonths(2),
-                        Description = "Activity 2 months in future",
-                        Category = "food",
-                        City = "London",
-                        Venue = "Jamies Italian",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "c",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(2)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(2)
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        Title = "Future Activity 3",
-                        Date = DateTime.Now.AddMonths(3),
-                        Description = "Activity 3 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(3)
-                            },
-                            new UserActivity
-                            {
-                                AppUserId = "c",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(3)
-                            },
-                        }
-                    },
-                    new Ticket
-                    {
-                        Title = "Future Activity 4",
-                        Date = DateTime.Now.AddMonths(4),
-                        Description = "Activity 4 months in future",
-                        Category = "culture",
-                        City = "London",
-                        Venue = "British Museum",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(4)
+                                IsManager = false,
                             }
                         }
                     },
-                    new Ticket
+                    new Team
                     {
-                        Title = "Future Activity 5",
-                        Date = DateTime.Now.AddMonths(5),
-                        Description = "Activity 5 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Punch and Judy",
-                        UserActivities = new List<UserActivity>
+                        Name = "Team 3",
+                        Description = "Team 3 Description",
+                        TeamMembers = new List<TeamMember>
                         {
-                            new UserActivity
+                            new TeamMember
+                            {
+                                AppUserId = "b",
+                                IsManager = true,
+                            },
+                            new TeamMember
+                            {
+                                AppUserId = "a",
+                                IsManager = false,
+                            },
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "Team 4",
+                        Description = "Team 4 Description",
+                        TeamMembers = new List<TeamMember>
+                        {
+                            new TeamMember
                             {
                                 AppUserId = "c",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(5)
+                                IsManager = true
                             },
-                            new UserActivity
+                            new TeamMember
                             {
-                                AppUserId = "b",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(5)
+                                AppUserId = "a",
+                                IsManager = false
                             },
                         }
                     },
-                    new Ticket
+                    new Team
                     {
-                        Title = "Future Activity 6",
-                        Date = DateTime.Now.AddMonths(6),
-                        Description = "Activity 6 months in future",
-                        Category = "music",
-                        City = "London",
-                        Venue = "O2 Arena",
-                        UserActivities = new List<UserActivity>
+                        Name = "Team 5",
+                        Description = "Team 5 Description",
+                        TeamMembers = new List<TeamMember>
                         {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(6)
-                            },
-                            new UserActivity
+                            new TeamMember
                             {
                                 AppUserId = "b",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(6)
+                                IsManager = true
                             },
-                        }
-                    },
-                    new Ticket
-                    {
-                        Title = "Future Activity 7",
-                        Date = DateTime.Now.AddMonths(7),
-                        Description = "Activity 7 months in future",
-                        Category = "travel",
-                        City = "Berlin",
-                        Venue = "All",
-                        UserActivities = new List<UserActivity>
-                        {
-                            new UserActivity
-                            {
-                                AppUserId = "a",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(7)
-                            },
-                            new UserActivity
+                            new TeamMember
                             {
                                 AppUserId = "c",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(7)
+                                IsManager = false
                             },
                         }
                     },
-                    new Ticket
+                    new Team
                     {
-                        Title = "Future Activity 8",
-                        Date = DateTime.Now.AddMonths(8),
-                        Description = "Activity 8 months in future",
-                        Category = "drinks",
-                        City = "London",
-                        Venue = "Pub",
-                        UserActivities = new List<UserActivity>
+                        Name = "Team 6",
+                        Description = "Team 6 Description",
+                        TeamMembers = new List<TeamMember>
                         {
-                            new UserActivity
-                            {
-                                AppUserId = "b",
-                                IsHost = true,
-                                DateJoined = DateTime.Now.AddMonths(8)
-                            },
-                            new UserActivity
+                            new TeamMember
                             {
                                 AppUserId = "a",
-                                IsHost = false,
-                                DateJoined = DateTime.Now.AddMonths(8)
+                                IsManager = true
+                            }
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "Team 7",
+                        Description = "Team 7 Description",
+                        TeamMembers = new List<TeamMember>
+                        {
+                            new TeamMember
+                            {
+                                AppUserId = "c",
+                                IsManager = true
+                            },
+                            new TeamMember
+                            {
+                                AppUserId = "b",
+                                IsManager = false
+                            },
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "Team 8",
+                        Description = "Team 8 Description",
+                        TeamMembers = new List<TeamMember>
+                        {
+                            new TeamMember
+                            {
+                                AppUserId = "a",
+                                IsManager = true
+                            },
+                            new TeamMember
+                            {
+                                AppUserId = "b",
+                                IsManager = false
+                            },
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "Team 9",
+                        Description = "Team 9 Description",
+                        TeamMembers = new List<TeamMember>
+                        {
+                            new TeamMember
+                            {
+                                AppUserId = "a",
+                                IsManager = true
+                            },
+                            new TeamMember
+                            {
+                                AppUserId = "c",
+                                IsManager = false
+                            },
+                        }
+                    },
+                    new Team
+                    {
+                        Name = "Team 10",
+                        Description = "Team 10 Description",
+                        TeamMembers = new List<TeamMember>
+                        {
+                            new TeamMember
+                            {
+                                AppUserId = "b",
+                                IsManager = true
+                            },
+                            new TeamMember
+                            {
+                                AppUserId = "a",
+                                IsManager = false
                             },
                         }
                     }
                 };
-
-                await context.Activities.AddRangeAsync(tickets);
+                await context.Teams.AddRangeAsync(teams);
                 await context.SaveChangesAsync();
             }
         }

@@ -1,3 +1,6 @@
+/*
+ * Object to store user data
+ */
 namespace Application.User
 {
     public class User

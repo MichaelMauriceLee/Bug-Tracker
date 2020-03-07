@@ -1,3 +1,6 @@
+/*
+ * Class to store Cloudinary Settings
+ */
 namespace Infrastructure.Photos
 {
     public class CloudinarySettings

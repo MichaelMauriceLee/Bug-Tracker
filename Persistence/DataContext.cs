@@ -1,7 +1,11 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+/*
+ * Data Context file used to interact with the database
+ *
+ * This file inherits AppUser entities from Identity Framework
+ */
 namespace Persistence
 {
     public class DataContext : IdentityDbContext<AppUser>

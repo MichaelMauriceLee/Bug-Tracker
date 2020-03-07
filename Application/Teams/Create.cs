@@ -1,20 +1,33 @@
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Errors;
 using Application.Interfaces;
+using Domain;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-
-namespace Application.Activities
+/*
+ * Command object to create a new team
+ */
+namespace Application.Teams
 {
-    public class Unattend
+    public class Create
     {
         public class Command : IRequest
         {
             public Guid Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
+        }
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Name).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+            }
         }
 
         public class Handler : IRequestHandler<Command>
@@ -29,25 +42,26 @@ namespace Application.Activities
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.Id);
+                var team = new Team
+                {
+                    Id = request.Id,
+                    Name = request.Name,
+                    Description = request.Description,
+                };
 
-                if (activity == null)
-                    throw new RestException(HttpStatusCode.NotFound, new {Activity = "Cound not find activity"});
+                _context.Teams.Add(team);
 
                 var user = await _context.Users.SingleOrDefaultAsync(x => 
                     x.UserName == _userAccessor.GetCurrentUsername());
 
-                var attendance = await _context.UserActivities
-                    .SingleOrDefaultAsync(x => x.ActivityId == activity.Id && 
-                        x.AppUserId == user.Id); 
+                var member = new TeamMember
+                {
+                    AppUser = user,
+                    Team = team,
+                    IsManager = true,
+                };
 
-                if (attendance == null)
-                    return Unit.Value;   
-
-                if (attendance.IsHost)
-                    throw new RestException(HttpStatusCode.BadRequest, new {Attendance = "You cannot remove yourself as host"});
-
-                _context.UserActivities.Remove(attendance);
+                _context.TeamMembers.Add(member);
 
                 var success = await _context.SaveChangesAsync() > 0;
 

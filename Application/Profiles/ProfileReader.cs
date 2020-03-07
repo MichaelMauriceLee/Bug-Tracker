@@ -6,6 +6,10 @@ using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
+/*
+ * Object to get the user's profile data
+ */
+
 namespace Application.Profiles
 {
     public class ProfileReader : IProfileReader

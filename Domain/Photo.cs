@@ -1,3 +1,6 @@
+/*
+ * Entity
+ */
 namespace Domain
 {
     public class Photo

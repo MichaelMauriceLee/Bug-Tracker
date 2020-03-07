@@ -1,5 +1,7 @@
 using System;
-
+/*
+ * Entity
+ */
 namespace Domain
 {
     public class Comment

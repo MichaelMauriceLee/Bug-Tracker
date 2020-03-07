@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Application.Errors;
 using MediatR;
 using Persistence;
-
-namespace Application.Activities
+/*
+ * Command object to delete a team
+ */
+namespace Application.Teams
 {
     public class Delete
     {
@@ -25,13 +27,12 @@ namespace Application.Activities
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.Id);
+                var team = await _context.Teams.FindAsync(request.Id);
 
-                if (activity == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { Activity = "Not found" });
-
-
-                _context.Remove(activity);
+                if (team == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { Team = "Not found" });
+                
+                _context.Remove(team);
 
                 var success = await _context.SaveChangesAsync() > 0;
 

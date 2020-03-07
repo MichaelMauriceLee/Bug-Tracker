@@ -1,10 +1,9 @@
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
-
+/*
+ * Command object for any requests to get profile details
+ */
 namespace Application.Profiles
 {
     public class Details

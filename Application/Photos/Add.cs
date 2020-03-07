@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
+/*
+ * Command object for any requests to upload a new photo
+ */
+
 namespace Application.Photos
 {
     public class Add

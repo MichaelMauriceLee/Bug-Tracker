@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Identity;
-
+/*
+ * Entity
+ */
 namespace Domain
 {
     public class AppUser : IdentityUser

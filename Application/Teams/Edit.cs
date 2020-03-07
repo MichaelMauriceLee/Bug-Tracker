@@ -1,48 +1,51 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Interfaces;
+using Application.Errors;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 /*
- * Command object for any requests to edit a user's profile
+ * Command object to edit team details
  */
-namespace Application.Profiles
+namespace Application.Teams
 {
     public class Edit
     {
         public class Command : IRequest
         {
-            public string DisplayName { get; set; }
-            public string Bio { get; set; }
+            public Guid Id { get; set; }
+            public string Name { get; set; }
+            public string Description { get; set; }
         }
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.DisplayName).NotEmpty();
+                RuleFor(x => x.Name).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
             }
         }
 
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext _context;
-            private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext context, IUserAccessor userAccessor)
+            public Handler(DataContext context)
             {
-                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetCurrentUsername());
+                var team = await _context.Teams.FindAsync(request.Id);
 
-                user.DisplayName = request.DisplayName ?? user.DisplayName;
-                user.Bio = request.Bio ?? user.Bio;
+                if (team == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { Team = "Not found" });
+
+                team.Name = request.Name ?? team.Name;
+                team.Description = request.Description ?? team.Description;
 
                 var success = await _context.SaveChangesAsync() > 0;
 

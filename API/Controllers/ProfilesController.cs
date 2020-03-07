@@ -1,8 +1,11 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Profiles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+
+/*
+ * REST endpoint for any requests regarding user profiles.
+ */
 
 namespace API.Controllers
 {
@@ -20,10 +23,10 @@ namespace API.Controllers
             return await Mediator.Send(command);
         }
 
-        [HttpGet("{username}/activities")]
-        public async Task<ActionResult<List<UserActivityDto>>> GetUserActivities(string username, string predicate) 
-        {
-            return await Mediator.Send(new ListActivities.Query{Username = username, Predicate = predicate});
-        }
+        // [HttpGet("{username}/activities")]
+        // public async Task<ActionResult<List<UserActivityDto>>> GetUserActivities(string username, string predicate) 
+        // {
+        //     return await Mediator.Send(new ListActivities.Query{Username = username, Predicate = predicate});
+        // }
     }
 }

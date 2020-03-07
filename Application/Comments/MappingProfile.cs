@@ -2,6 +2,10 @@ using System.Linq;
 using AutoMapper;
 using Domain;
 
+/*
+ * Mapping profile for CommentDto to shape the data and avoid self references
+ */
+
 namespace Application.Comments
 {
     public class MappingProfile : Profile

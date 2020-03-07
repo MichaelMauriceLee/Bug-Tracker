@@ -9,6 +9,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
+/*
+ * Command object for any requests to create a new comment
+ */
 namespace Application.Comments
 {
     public class Create
@@ -16,7 +19,7 @@ namespace Application.Comments
         public class Command : IRequest<CommentDto>
         {
             public string Body { get; set; }
-            public Guid ActivityId { get; set; }
+            public Guid TicketId { get; set; }
             public string Username { get; set; }
         }
 
@@ -32,9 +35,9 @@ namespace Application.Comments
 
             public async Task<CommentDto> Handle(Command request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.ActivityId);
+                var ticket = await _context.Tickets.FindAsync(request.TicketId);
 
-                if (activity == null)
+                if (ticket == null)
                     throw new RestException(HttpStatusCode.NotFound, new {Activity = "Not found"});
 
                 var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.Username);
@@ -42,12 +45,12 @@ namespace Application.Comments
                 var comment = new Comment
                 {
                     Author = user,
-                    Ticket = activity,
+                    Ticket = ticket,
                     Body = request.Body,
                     CreatedAt = DateTime.Now
                 };
 
-                activity.Comments.Add(comment);
+                ticket.Comments.Add(comment);
 
                 var success = await _context.SaveChangesAsync() > 0;
 

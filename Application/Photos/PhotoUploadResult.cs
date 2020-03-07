@@ -1,3 +1,6 @@
+/*
+ * Object used to return the result of the photo upload
+ */
 namespace Application.Photos
 {
     public class PhotoUploadResult

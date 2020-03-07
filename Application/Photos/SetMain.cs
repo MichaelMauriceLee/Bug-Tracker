@@ -8,7 +8,9 @@ using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-
+/*
+ * Command object for any requests to set the profile picture for a user
+ */
 namespace Application.Photos
 {
     public class SetMain

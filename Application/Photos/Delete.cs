@@ -8,7 +8,9 @@ using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-
+/*
+ * Command object for any requests to delete a photo
+ */
 namespace Application.Photos
 {
     public class Delete

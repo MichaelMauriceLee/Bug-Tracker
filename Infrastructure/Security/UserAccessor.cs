@@ -2,7 +2,9 @@ using System.Linq;
 using System.Security.Claims;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
-
+/*
+ * Class to get current logged in user info
+ */
 namespace Infrastructure.Security
 {
     public class UserAccessor : IUserAccessor

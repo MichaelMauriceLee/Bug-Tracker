@@ -1,6 +1,10 @@
 using System;
 using System.Net;
 
+/*
+ * Custom exception to handle REST errors
+ */
+
 namespace Application.Errors
 {
     public class RestException : Exception

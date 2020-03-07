@@ -8,6 +8,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistence;
 
+/*
+ * Main class that starts the entire server
+ */
 
 namespace API
 {
@@ -32,12 +35,8 @@ namespace API
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred during migration");
                 }
-
-                
             }
-
             host.Run();
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -5,8 +5,9 @@ using Application.Interfaces;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Persistence;
-
+/*
+ * Query object to get current user info
+ */
 namespace Application.User
 {
     public class CurrentUser
