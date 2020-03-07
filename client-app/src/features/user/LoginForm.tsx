@@ -7,7 +7,6 @@ import { IUserFormValues } from '../../app/models/user';
 import { FORM_ERROR } from 'final-form';
 import { combineValidators, isRequired } from 'revalidate';
 import ErrorMessage from '../../app/common/form/ErrorMessage';
-import SocialLogin from './SocialLogin';
 import { observer } from 'mobx-react-lite';
 
 const validate = combineValidators({
@@ -17,16 +16,16 @@ const validate = combineValidators({
 
 const LoginForm = () => {
   const rootStore = useContext(RootStoreContext);
-  const { login, fbLogin, loading } = rootStore.userStore;
+  const { login, loading } = rootStore.userStore;
   return (
     <FinalForm
-      onSubmit={(values: IUserFormValues) =>
+        onSubmit={(values: IUserFormValues) =>
         login(values).catch(error => ({
           [FORM_ERROR]: error
         }))
       }
-      validate={validate}
-      render={({
+        validate={validate}
+        render={({
         handleSubmit,
         submitting,
         submitError,
@@ -37,7 +36,7 @@ const LoginForm = () => {
         <Form onSubmit={handleSubmit} error>
           <Header
             as='h2'
-            content='Login to Connectivities'
+            content='Login to the Bug Tracker'
             color='teal'
             textAlign='center'
           />
@@ -61,8 +60,6 @@ const LoginForm = () => {
             content='Login'
             fluid
           />
-          <Divider horizontal>Or</Divider>
-          <SocialLogin loading={loading} fbCallback={fbLogin} />
         </Form>
       )}
     />
