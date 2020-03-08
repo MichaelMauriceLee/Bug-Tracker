@@ -50,13 +50,13 @@ namespace API.Controllers
             return await Mediator.Send(new Delete.Command{Id = id});
         }
 
-        [HttpPost("{id}/attend")]
+        [HttpPost("{id}/belong")]
         public async Task<ActionResult<Unit>> Belong(Guid id)
         {
             return await Mediator.Send(new Belong.Command{Id = id});
         }
 
-        [HttpDelete("{id}/attend")]
+        [HttpDelete("{id}/belong")]
         public async Task<ActionResult<Unit>> Unbelong(Guid id)
         {
             return await Mediator.Send(new Unbelong.Command{Id = id});

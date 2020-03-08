@@ -16,6 +16,6 @@ namespace Application.Activities
         public string Description { get; set; }
 
         [JsonPropertyName("members")]
-        public ICollection<TeamMember> TeamMembers { get; set; }
+        public ICollection<MemberDto> Members { get; set; }
     }
 }
