@@ -8,8 +8,9 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Persistence;
-
+/*
+ * Query object to log the user in
+ */
 namespace Application.User
 {
     public class Login

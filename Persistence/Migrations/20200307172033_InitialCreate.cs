@@ -8,23 +8,6 @@ namespace Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Category = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    City = table.Column<string>(nullable: true),
-                    Venue = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -66,16 +49,16 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Values",
+                name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Values", x => x.Id);
+                    table.PrimaryKey("PK_Teams", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,7 +66,7 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -104,7 +87,7 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -185,57 +168,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Body = table.Column<string>(nullable: true),
-                    AuthorId = table.Column<string>(nullable: true),
-                    ActivityId = table.Column<Guid>(nullable: true),
-                    CreatedAt = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Comments_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Followings",
-                columns: table => new
-                {
-                    ObserverId = table.Column<string>(nullable: false),
-                    TargetId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Followings", x => new { x.ObserverId, x.TargetId });
-                    table.ForeignKey(
-                        name: "FK_Followings_AspNetUsers_ObserverId",
-                        column: x => x.ObserverId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Followings_AspNetUsers_TargetId",
-                        column: x => x.TargetId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
@@ -256,45 +188,97 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserActivities",
+                name: "TeamMembers",
                 columns: table => new
                 {
                     AppUserId = table.Column<string>(nullable: false),
-                    ActivityId = table.Column<Guid>(nullable: false),
-                    DateJoined = table.Column<DateTime>(nullable: false),
-                    IsHost = table.Column<bool>(nullable: false)
+                    TeamId = table.Column<Guid>(nullable: false),
+                    IsManager = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserActivities", x => new { x.AppUserId, x.ActivityId });
+                    table.PrimaryKey("PK_TeamMembers", x => new { x.AppUserId, x.TeamId });
                     table.ForeignKey(
-                        name: "FK_UserActivities_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserActivities_AspNetUsers_AppUserId",
+                        name: "FK_TeamMembers_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamMembers_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Values",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Value 101" });
+            migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    SubmissionDate = table.Column<DateTime>(nullable: false),
+                    AcceptanceDate = table.Column<DateTime>(nullable: false),
+                    DueDate = table.Column<DateTime>(nullable: false),
+                    Priority = table.Column<string>(nullable: true),
+                    IsAccepted = table.Column<bool>(nullable: false),
+                    SubmitterId = table.Column<string>(nullable: true),
+                    TeamId = table.Column<string>(nullable: true),
+                    TeamId1 = table.Column<Guid>(nullable: true),
+                    AssigneeId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_AspNetUsers_AssigneeId",
+                        column: x => x.AssigneeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tickets_AspNetUsers_SubmitterId",
+                        column: x => x.SubmitterId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Teams_TeamId1",
+                        column: x => x.TeamId1,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
-            migrationBuilder.InsertData(
-                table: "Values",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 2, "Value 102" });
-
-            migrationBuilder.InsertData(
-                table: "Values",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 3, "Value 103" });
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Body = table.Column<string>(nullable: true),
+                    AuthorId = table.Column<string>(nullable: true),
+                    TicketId = table.Column<Guid>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -305,8 +289,7 @@ namespace Persistence.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -332,13 +315,7 @@ namespace Persistence.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_ActivityId",
-                table: "Comments",
-                column: "ActivityId");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AuthorId",
@@ -346,9 +323,9 @@ namespace Persistence.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Followings_TargetId",
-                table: "Followings",
-                column: "TargetId");
+                name: "IX_Comments_TicketId",
+                table: "Comments",
+                column: "TicketId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_AppUserId",
@@ -356,9 +333,24 @@ namespace Persistence.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserActivities_ActivityId",
-                table: "UserActivities",
-                column: "ActivityId");
+                name: "IX_TeamMembers_TeamId",
+                table: "TeamMembers",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_AssigneeId",
+                table: "Tickets",
+                column: "AssigneeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_SubmitterId",
+                table: "Tickets",
+                column: "SubmitterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_TeamId1",
+                table: "Tickets",
+                column: "TeamId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -382,25 +374,22 @@ namespace Persistence.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Followings");
-
-            migrationBuilder.DropTable(
                 name: "Photos");
 
             migrationBuilder.DropTable(
-                name: "UserActivities");
-
-            migrationBuilder.DropTable(
-                name: "Values");
+                name: "TeamMembers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Activities");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Teams");
         }
     }
 }

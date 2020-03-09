@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Domain;
-
+/*
+ * Object to contain user profile info
+ */
 namespace Application.Profiles
 {
     public class Profile

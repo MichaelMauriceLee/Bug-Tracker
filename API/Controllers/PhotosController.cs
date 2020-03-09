@@ -4,6 +4,10 @@ using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
+/*
+ * REST endpoint for any requests regarding photos.
+ */
+
 namespace API.Controllers
 {
     public class PhotosController : BaseController

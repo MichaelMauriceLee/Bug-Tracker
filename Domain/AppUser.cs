@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Identity;
-
+/*
+ * Entity
+ */
 namespace Domain
 {
     public class AppUser : IdentityUser
@@ -12,7 +14,7 @@ namespace Domain
         }
         public string DisplayName { get; set; }
         public string Bio { get; set; }
-        public virtual ICollection<UserActivity> UserActivities { get; set; }
+        public virtual ICollection<TeamMember> TeamMembers { get; set; }
         public virtual ICollection<Photo> Photos { get; set; }
     }
 }

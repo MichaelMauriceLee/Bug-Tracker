@@ -1,5 +1,9 @@
 using System;
 
+/*
+ * Data Transfer Object to allow Entity Framework to fetch comments w/o self referencing
+ */
+
 namespace Application.Comments
 {
     public class CommentDto

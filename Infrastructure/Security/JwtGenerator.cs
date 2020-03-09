@@ -7,7 +7,9 @@ using Application.Interfaces;
 using Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-
+/*
+ * Class to generate JWT 
+ */
 namespace Infrastructure.Security
 {
     public class JwtGenerator : IJwtGenerator

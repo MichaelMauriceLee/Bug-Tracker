@@ -5,6 +5,12 @@ using Application.Comments;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
+/*
+ * REST endpoint for any requests regarding comments.
+ *
+ * Unlike the other endpoints, this uses websockets instead of HTTP to allow for real-time communication
+ */
+
 namespace API.SignalR
 {
     public class ChatHub : Hub
@@ -23,7 +29,7 @@ namespace API.SignalR
 
             var comment = await _mediator.Send(command);
 
-            await Clients.Group(command.ActivityId.ToString()).SendAsync("ReceiveComment", comment);
+            await Clients.Group(command.TicketId.ToString()).SendAsync("ReceiveComment", comment);
         }
 
         private string GetUsername()

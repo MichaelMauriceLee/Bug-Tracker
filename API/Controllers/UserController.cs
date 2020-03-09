@@ -1,8 +1,11 @@
 using System.Threading.Tasks;
 using Application.User;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+/*
+ * REST endpoint for any requests regarding logging in and/or current user.
+ */
 
 namespace API.Controllers
 {

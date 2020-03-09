@@ -6,6 +6,10 @@ using Application.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
+/*
+ * Class for error handling middleware for the HTTP pipeline
+ */
+
 namespace API.Middleware
 {
     public class ErrorHandlingMiddleware

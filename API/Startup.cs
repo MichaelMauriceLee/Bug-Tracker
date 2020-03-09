@@ -2,7 +2,7 @@ using System.Text;
 using System.Threading.Tasks;
 using API.Middleware;
 using API.SignalR;
-using Application.Activities;
+using Application.Teams;
 using Application.Interfaces;
 using Application.Profiles;
 using AutoMapper;
@@ -24,6 +24,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
+/*
+ * Class that configures services to the ASP .NET project
+ *
+ * This class specifies which database to use, what classes to use to dependency injection, endpoints to use, etc.
+ */
+
 namespace API
 {
     public class Startup
@@ -36,7 +42,6 @@ namespace API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(opt =>
@@ -88,12 +93,12 @@ namespace API
 
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("IsActivityHost", policy =>
+                opt.AddPolicy("IsManager", policy =>
                 {
-                    policy.Requirements.Add(new IsHostRequirement());
+                    policy.Requirements.Add(new IsManagerRequirement());
                 });
             });
-            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, IsManagerRequirementHandler>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

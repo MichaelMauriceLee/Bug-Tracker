@@ -1,8 +1,11 @@
-﻿using System;
-using Domain;
+﻿using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+/*
+ * Data Context file used to interact with the database
+ *
+ * This file inherits AppUser entities from Identity Framework
+ */
 namespace Persistence
 {
     public class DataContext : IdentityDbContext<AppUser>
@@ -11,27 +14,29 @@ namespace Persistence
         {
         }
 
-        public DbSet<Activity> Activities { get; set; }
-        public DbSet<UserActivity> UserActivities { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
+        // Specify to Entity Framework how to build TeamMember object
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<UserActivity>(x => x.HasKey(ua =>
-                new { ua.AppUserId, ua.ActivityId }));
+            builder.Entity<TeamMember>(x => x.HasKey(tm =>
+                new { tm.AppUserId, tm.TeamId }));
 
-            builder.Entity<UserActivity>()
-                .HasOne(u => u.AppUser)
-                .WithMany(a => a.UserActivities)
-                .HasForeignKey(u => u.AppUserId);
+            builder.Entity<TeamMember>()
+                .HasOne(t => t.AppUser)
+                .WithMany(m => m.TeamMembers)
+                .HasForeignKey(t => t.AppUserId);
 
-            builder.Entity<UserActivity>()
-                .HasOne(a => a.Activity)
-                .WithMany(u => u.UserActivities)
-                .HasForeignKey(a => a.ActivityId);
+            builder.Entity<TeamMember>()
+                .HasOne(m => m.Team)
+                .WithMany(t => t.TeamMembers)
+                .HasForeignKey(a => a.TeamId);
         }
     }
 }
