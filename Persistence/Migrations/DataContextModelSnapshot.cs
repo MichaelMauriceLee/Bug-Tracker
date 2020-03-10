@@ -169,6 +169,20 @@ namespace Persistence.Migrations
                     b.ToTable("TeamMembers");
                 });
 
+            modelBuilder.Entity("Domain.Test", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tests");
+                });
+
             modelBuilder.Entity("Domain.Ticket", b =>
                 {
                     b.Property<Guid>("Id")
