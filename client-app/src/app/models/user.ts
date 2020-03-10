@@ -1,3 +1,7 @@
+/*
+ * Defines the model used for user
+ */
+
 export interface IUser {
     username: string;
     displayName: string;

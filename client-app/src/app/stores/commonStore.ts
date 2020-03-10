@@ -1,8 +1,13 @@
 import {RootStore} from './rootStore';
-import { observable, action, reaction } from 'mobx';
+import {observable, action, reaction} from 'mobx';
+
+/*
+ * Store that contains state and properties that all parts of the application require
+ */
 
 export default class CommonStore {
     rootStore: RootStore;
+
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
 

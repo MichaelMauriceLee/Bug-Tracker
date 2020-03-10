@@ -1,34 +1,39 @@
-import React, { Fragment } from 'react';
-import { Segment, Button, Placeholder } from 'semantic-ui-react';
+import React, {Fragment} from 'react';
+import {Segment, Button, Placeholder} from 'semantic-ui-react';
+
+/*
+ * React component used as a placeholder for ActivityListItem while loading
+ */
+
 const ActivityListItemPlaceholder = () => {
-  return (
-    <Fragment>
-      <Placeholder fluid style={{ marginTop: 50 }}>
-        <Segment.Group>
-          <Segment style={{ minHeight: 110 }}>
-            <Placeholder>
-              <Placeholder.Header image>
-                <Placeholder.Line />
-                <Placeholder.Line />
-              </Placeholder.Header>
-              <Placeholder.Paragraph>
-                <Placeholder.Line />
-              </Placeholder.Paragraph>
+    return (
+        <Fragment>
+            <Placeholder fluid style={{marginTop: 50}}>
+                <Segment.Group>
+                    <Segment style={{minHeight: 110}}>
+                        <Placeholder>
+                            <Placeholder.Header image>
+                                <Placeholder.Line/>
+                                <Placeholder.Line/>
+                            </Placeholder.Header>
+                            <Placeholder.Paragraph>
+                                <Placeholder.Line/>
+                            </Placeholder.Paragraph>
+                        </Placeholder>
+                    </Segment>
+                    <Segment>
+                        <Placeholder>
+                            <Placeholder.Line/>
+                            <Placeholder.Line/>
+                        </Placeholder>
+                    </Segment>
+                    <Segment secondary style={{minHeight: 70}}/>
+                    <Segment clearing>
+                        <Button disabled color='blue' floated='right' content='View'/>
+                    </Segment>
+                </Segment.Group>
             </Placeholder>
-          </Segment>
-          <Segment>
-            <Placeholder>
-              <Placeholder.Line />
-              <Placeholder.Line />
-            </Placeholder>
-          </Segment>
-          <Segment secondary style={{ minHeight: 70 }} />
-          <Segment clearing>
-            <Button disabled color='blue' floated='right' content='View' />
-          </Segment>
-        </Segment.Group>
-      </Placeholder>
-    </Fragment>
-  );
+        </Fragment>
+    );
 };
 export default ActivityListItemPlaceholder;
