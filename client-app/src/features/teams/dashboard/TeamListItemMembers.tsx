@@ -1,13 +1,13 @@
 import React from 'react';
 import {List, Image, Popup} from 'semantic-ui-react';
-import {IAttendee} from '../../../app/models/activity';
+import {IMember} from '../../../app/models/team';
 
 /*
  * React component that contains a list of attendees
  */
 
 interface IProps {
-    attendees: IAttendee[];
+    attendees: IMember[];
 }
 
 const styles = {
@@ -15,7 +15,7 @@ const styles = {
     borderWidth: 2
 }
 
-const ActivityListItemAttendees: React.FC<IProps> = ({attendees}) => {
+const TeamListItemMembers: React.FC<IProps> = ({attendees}) => {
     return (
         <List horizontal>
             {attendees.map(attendee => (
@@ -28,7 +28,6 @@ const ActivityListItemAttendees: React.FC<IProps> = ({attendees}) => {
                                 circular
                                 src={attendee.image || '/assets/user.png'}
                                 bordered
-                                style={attendee.following ? styles : null}
                             />
                         }
                     />
@@ -38,4 +37,4 @@ const ActivityListItemAttendees: React.FC<IProps> = ({attendees}) => {
     );
 };
 
-export default ActivityListItemAttendees;
+export default TeamListItemMembers;

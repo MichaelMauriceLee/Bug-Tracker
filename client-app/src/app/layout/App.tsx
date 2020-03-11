@@ -3,7 +3,7 @@ import {Container} from 'semantic-ui-react';
 import NavBar from '../../features/nav/NavBar';
 import NavSideBar from '../../features/nav/NavSideBar';
 import NavMenu from '../../features/nav/NavMenu';
-import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
+import TeamDashboard from '../../features/teams/dashboard/TeamDashboard';
 import {observer} from 'mobx-react-lite';
 import {
     Route,
@@ -12,8 +12,8 @@ import {
     Switch
 } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
-import ActivityForm from '../../features/activities/form/ActivityForm';
-import ActivityDetails from '../../features/activities/details/ActivityDetails';
+import TeamForm from '../../features/teams/form/TeamForm';
+import TeamDetails from '../../features/teams/details/TeamDetails';
 import NotFound from './NotFound';
 import {ToastContainer} from 'react-toastify';
 import {RootStoreContext} from '../stores/rootStore';
@@ -22,7 +22,7 @@ import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import PrivateRoute from './PrivateRoute';
 import TicketDashboard from '../../features/tickets/TicketDashboard';
-import InfoDashboard from '../../features/infodashboard/InfoDashboard'
+import InfoDashboard from '../../features/statistics/StatisticsDashboard'
 
 /*
  * Main React component that houses all other components
@@ -57,12 +57,12 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
                         <Container style={{marginTop: '7em'}}>
                             <Switch>
                                 <PrivateRoute path='/dashboard' component={InfoDashboard}/>
-                                <PrivateRoute exact path='/activities' component={ActivityDashboard}/>
-                                <PrivateRoute path='/activities/:id' component={ActivityDetails}/>
+                                <PrivateRoute exact path='/teams' component={TeamDashboard}/>
+                                <PrivateRoute path='/teams/:id' component={TeamDetails}/>
                                 <PrivateRoute
                                     key={location.key}
-                                    path={['/createActivity', '/manage/:id']}
-                                    component={ActivityForm}
+                                    path={['/createTeam', '/manage/:id']}
+                                    component={TeamForm}
                                 />
                                 <PrivateRoute path='/tickets' component={TicketDashboard}/>
                                 <PrivateRoute path='/profile/:username' component={ProfilePage}/>

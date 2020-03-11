@@ -32,7 +32,7 @@ const ProfileDescription = () => {
                 </Grid.Column>
                 <Grid.Column width={16}>
                     {editMode ? (
-                        <ProfileEditForm updateProfile={updateProfile} profile={profile!}/>
+                        <ProfileEditForm updateProfile={updateProfile} profile={profile!} editMode={editMode} setEditMode={setEditMode}/>
                     ) : (
                         <span>{profile!.bio}</span>
                     )}

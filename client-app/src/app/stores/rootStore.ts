@@ -1,10 +1,10 @@
-import ActivityStore from './activityStore';
 import UserStore from './userStore';
 import {createContext} from 'react';
 import {configure} from 'mobx';
 import CommonStore from './commonStore';
 import ModalStore from './modalStore';
 import ProfileStore from './profileStore';
+import TeamStore from './teamStore';
 
 /*
  * Store that contains all other stores
@@ -13,14 +13,14 @@ import ProfileStore from './profileStore';
 configure({enforceActions: 'always'});
 
 export class RootStore {
-    activityStore: ActivityStore;
+    teamStore: TeamStore;
     userStore: UserStore;
     commonStore: CommonStore;
     modalStore: ModalStore;
     profileStore: ProfileStore;
 
     constructor() {
-        this.activityStore = new ActivityStore(this);
+        this.teamStore = new TeamStore(this);
         this.userStore = new UserStore(this);
         this.commonStore = new CommonStore(this);
         this.modalStore = new ModalStore(this);

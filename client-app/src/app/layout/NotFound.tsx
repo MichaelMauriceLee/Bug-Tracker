@@ -14,7 +14,7 @@ const NotFound = () => {
                 Oops - we've looked everywhere but couldn't find this.
             </Header>
             <Segment.Inline>
-                <Button as={Link} to='/activities' primary>
+                <Button as={Link} to='/dashboard' primary>
                     Return to my home page
                 </Button>
             </Segment.Inline>

@@ -8,7 +8,7 @@ import TextInput from '../../app/common/form/TextInput';
 import TextAreaInput from '../../app/common/form/TextAreaInput';
 
 /*
- * React componenet to allow users to edit profile fields
+ * React component to allow users to edit profile fields
  */
 
 const validate = combineValidators({
@@ -18,9 +18,12 @@ const validate = combineValidators({
 interface IProps {
     updateProfile: (profile: Partial<IProfile>) => void;
     profile: IProfile;
+    editMode: boolean;
+    setEditMode: (editMode: boolean) => void;
 }
 
-const ProfileEditForm: React.FC<IProps> = ({updateProfile, profile}) => {
+const ProfileEditForm: React.FC<IProps> = ({updateProfile, profile, editMode, setEditMode}) => {
+    
     return (
         <FinalForm
             onSubmit={updateProfile}

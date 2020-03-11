@@ -18,15 +18,6 @@ const NavBar: React.FC = () => {
                 Bug Tracker
             </Menu.Item>
             <Container>
-                {/*<Menu.Item name='Activities' as={NavLink} to='/activities'/>*/}
-                {/*<Menu.Item>*/}
-                {/*    <Button*/}
-                {/*        as={NavLink}*/}
-                {/*        to='/createActivity'*/}
-                {/*        positive*/}
-                {/*        content='Create Activity'*/}
-                {/*    />*/}
-                {/*</Menu.Item>*/}
                 {user && (
                     <Menu.Item position='right'>
                         <Image avatar spaced='right' src={user.image || '/assets/user.png'}/>

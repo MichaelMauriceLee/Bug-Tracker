@@ -18,12 +18,6 @@ const ProfileCard: React.FC<IProps> = ({profile}) => {
             <Card.Content>
                 <Card.Header>{profile.displayName}</Card.Header>
             </Card.Content>
-            <Card.Content extra>
-                <div>
-                    <Icon name='user'/>
-                    {profile.followersCount} Followers
-                </div>
-            </Card.Content>
         </Card>
     );
 };

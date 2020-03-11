@@ -3,7 +3,7 @@ import {Input, Label, Menu} from 'semantic-ui-react'
 import {NavLink} from "react-router-dom";
 
 /*
- * Dashboard for the 
+ * React componeent displaying menu items on the side 
  */
 
 const NavSideBar = () => {

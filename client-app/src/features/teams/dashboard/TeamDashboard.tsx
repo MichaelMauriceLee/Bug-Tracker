@@ -1,42 +1,43 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Grid, Loader} from 'semantic-ui-react';
-import ActivityList from './ActivityList';
+import TeamList from './TeamList';
 import {observer} from 'mobx-react-lite';
 import {RootStoreContext} from '../../../app/stores/rootStore';
 import InfiniteScroll from 'react-infinite-scroller';
-import ActivityFilters from './ActivityFilters';
-import ActivityListItemPlaceholder from './ActivityListItemPlaceholder';
+import TeamListItemPlaceholder from './TeamListItemPlaceholder';
+import TeamFilters from './TeamFilters';
 
 /*
  * React component that contains a list of activities
  */
 
-const ActivityDashboard: React.FC = () => {
+
+const TeamDashboard: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
     const {
-        loadActivities,
+        loadTeams,
         loadingInitial,
         setPage,
         page,
         totalPages
-    } = rootStore.activityStore;
+    } = rootStore.teamStore;
     const [loadingNext, setLoadingNext] = useState(false);
 
     const handleGetNext = () => {
         setLoadingNext(true);
         setPage(page + 1);
-        loadActivities().then(() => setLoadingNext(false));
+        loadTeams().then(() => setLoadingNext(false));
     };
 
     useEffect(() => {
-        loadActivities();
-    }, [loadActivities]);
+        loadTeams();
+    }, [loadTeams]);
 
     return (
         <Grid>
             <Grid.Column width={10}>
                 {loadingInitial && page === 0 ? (
-                    <ActivityListItemPlaceholder/>
+                    <TeamListItemPlaceholder />
                 ) : (
                     <InfiniteScroll
                         pageStart={0}
@@ -44,18 +45,18 @@ const ActivityDashboard: React.FC = () => {
                         hasMore={!loadingNext && page + 1 < totalPages}
                         initialLoad={false}
                     >
-                        <ActivityList/>
+                        <TeamList />
                     </InfiniteScroll>
                 )}
             </Grid.Column>
             <Grid.Column width={6}>
-                <ActivityFilters/>
+                <TeamFilters />
             </Grid.Column>
             <Grid.Column width={10}>
-                <Loader active={loadingNext}/>
+                <Loader active={loadingNext} />
             </Grid.Column>
         </Grid>
     );
 };
 
-export default observer(ActivityDashboard);
+export default observer(TeamDashboard);

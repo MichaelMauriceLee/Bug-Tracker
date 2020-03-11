@@ -1,4 +1,4 @@
-import {IActivity, IAttendee} from "../../models/activity";
+import {ITeam, IMember} from "../../models/team";
 import {IUser} from "../../models/user";
 
 /*
@@ -12,21 +12,20 @@ export const combineDateAndTime = (date: Date, time: Date) => {
     return new Date(dateString + 'T' + timeString);
 }
 
-export const setActivityProps = (activity: IActivity, user: IUser) => {
-    activity.date = new Date(activity.date);
-    activity.isGoing = activity.attendees.some(
-        a => a.username === user.username
-    )
-    activity.isHost = activity.attendees.some(
-        a => a.username === user.username && a.isHost
-    )
-    return activity;
+export const setTeamProps = (team: ITeam, user: IUser) => {
+    // activity.isGoing = activity.attendees.some(
+    //     a => a.username === user.username
+    // )
+    // activity.isHost = activity.attendees.some(
+    //     a => a.username === user.username && a.isHost
+    // )
+    return team;
 }
 
-export const createAttendee = (user: IUser): IAttendee => {
+export const createMember = (user: IUser): IMember => {
     return {
         displayName: user.displayName,
-        isHost: false,
+        isManager: false,
         username: user.username,
         image: user.image!
     }

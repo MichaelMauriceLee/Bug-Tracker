@@ -4,7 +4,7 @@
  * TODO
  */
 
-const InfoDashboard = () => {
+const StatisticsDashboard = () => {
     return (
         <header>
             TO BE IMPLEMENTED LATER
@@ -12,4 +12,4 @@ const InfoDashboard = () => {
     )
 }
 
-export default InfoDashboard
+export default StatisticsDashboard

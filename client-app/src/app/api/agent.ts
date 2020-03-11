@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
-import {IActivity, IActivitiesEnvelope} from '../models/activity';
+import {ITeam, ITeamsEnvelope} from '../models/team';
 import {history} from '../..';
 import {toast} from 'react-toastify';
 import {IUser, IUserFormValues} from '../models/user';
@@ -78,16 +78,16 @@ const requests = {
     }
 };
 
-const Activities = {
-    list: (params: URLSearchParams): Promise<IActivitiesEnvelope> =>
-        axios.get('/activities', {params: params}).then(responseBody),
-    details: (id: string) => requests.get(`/activities/${id}`),
-    create: (activity: IActivity) => requests.post('/activities', activity),
-    update: (activity: IActivity) =>
-        requests.put(`/activities/${activity.id}`, activity),
-    delete: (id: string) => requests.del(`/activities/${id}`),
-    attend: (id: string) => requests.post(`/activities/${id}/attend`, {}),
-    unattend: (id: string) => requests.del(`/activities/${id}/attend`)
+const Teams = {
+    list: (params: URLSearchParams): Promise<ITeamsEnvelope> =>
+        axios.get('/teams', {params: params}).then(responseBody),
+    details: (id: string) => requests.get(`/teams/${id}`),
+    create: (team: ITeam) => requests.post('/teams', team),
+    update: (team: ITeam) =>
+        requests.put(`/teams/${team.id}`, team),
+    delete: (id: string) => requests.del(`/teams/${id}`),
+    belong: (id: string) => requests.post(`/teams/${id}/belong`, {}),
+    unbelong: (id: string) => requests.del(`/teams/${id}/unbelong`)
 };
 
 const User = {
@@ -96,8 +96,6 @@ const User = {
         requests.post(`/user/login`, user),
     register: (user: IUserFormValues): Promise<IUser> =>
         requests.post(`/user/register`, user),
-    fbLogin: (accessToken: string) =>
-        requests.post(`/user/facebook`, {accessToken})
 };
 
 const Profiles = {
@@ -109,17 +107,14 @@ const Profiles = {
     deletePhoto: (id: string) => requests.del(`/photos/${id}`),
     updateProfile: (profile: Partial<IProfile>) =>
         requests.put(`/profiles`, profile),
-    follow: (username: string) =>
-        requests.post(`/profiles/${username}/follow`, {}),
-    unfollow: (username: string) => requests.del(`/profiles/${username}/follow`),
-    listFollowings: (username: string, predicate: string) =>
-        requests.get(`/profiles/${username}/follow?predicate=${predicate}`),
-    listActivities: (username: string, predicate: string) =>
-        requests.get(`/profiles/${username}/activities?predicate=${predicate}`)
 };
 
+const Tickets = {
+    //TODO fill in HTTP methods here
+}
+
 export default {
-    Activities,
+    Teams,
     User,
     Profiles
 };

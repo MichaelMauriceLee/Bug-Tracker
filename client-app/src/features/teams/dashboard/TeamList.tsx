@@ -1,27 +1,27 @@
 import React, {useContext, Fragment} from 'react';
 import {Item, Label} from 'semantic-ui-react';
 import {observer} from 'mobx-react-lite';
-import ActivityListItem from './ActivityListItem';
 import {RootStoreContext} from '../../../app/stores/rootStore';
 import {format} from 'date-fns';
+import TeamListItem from './TeamListItem';
 
 /*
- * React component that contains the list of activities
+ * React component that contains the list of teams
  */
 
-const ActivityList: React.FC = () => {
+const TeamList: React.FC = () => {
     const rootStore = useContext(RootStoreContext);
-    const {activitiesByDate} = rootStore.activityStore;
+    const { teamsByName } = rootStore.teamStore;
     return (
         <Fragment>
-            {activitiesByDate.map(([group, activities]) => (
+            {teamsByName.map(([group, teams]) => (
                 <Fragment key={group}>
                     <Label size='large' color='blue'>
-                        {format(group, 'eeee do MMMM')}
+                        {group}
                     </Label>
                     <Item.Group divided>
-                        {activities.map(activity => (
-                            <ActivityListItem key={activity.id} activity={activity}/>
+                        {teams.map(team => (
+                            <TeamListItem key={team.id} team={team} />
                         ))}
                     </Item.Group>
                 </Fragment>
@@ -30,4 +30,4 @@ const ActivityList: React.FC = () => {
     );
 };
 
-export default observer(ActivityList);
+export default observer(TeamList);

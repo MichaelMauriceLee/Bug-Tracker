@@ -29,7 +29,7 @@ const HomePage = () => {
                 {isLoggedIn && user && token ? (
                     <Fragment>
                         <Header as='h2' inverted content={`Welcome back ${user.displayName}`}/>
-                        <Button as={Link} to='/activities' size='huge' inverted>
+                        <Button as={Link} to='/dashboard' size='huge' inverted>
                             Go to my home page!
                         </Button>
                     </Fragment>
