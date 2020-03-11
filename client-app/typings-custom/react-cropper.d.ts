@@ -1,3 +1,6 @@
+/*
+ * Custom typescript declaration for react-cropper 
+ */
 declare module 'react-cropper' {
     import * as cropperjs from 'cropperjs';
     import * as React from 'react';
