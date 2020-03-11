@@ -2,7 +2,9 @@
  * REST endpoint for any requests regarding teams.
  */
 
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Application.Tickets;
 using Domain;
@@ -28,6 +30,15 @@ namespace API.Controllers
             return await _mediator.Send(new List.Query());          //Sending a message to the List Query Handler
         }
 
+        [HttpGet("{id}")]    //Get a particular ticket --> pass in id as a root parameter
+        public async Task<ActionResult<Ticket>> Details(Guid id){
+            return await _mediator.Send(new Details.Query{Id = id});      //take id from root paramter and see if it matches any of the guids of the tickets in the DB
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Unit>> Create(Create.Command command){
+            return await _mediator.Send(command);
+        }
 
     }
 }

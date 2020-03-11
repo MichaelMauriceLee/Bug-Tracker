@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Persistence;
 
 namespace Application.Tickets
@@ -12,7 +14,7 @@ namespace Application.Tickets
     public class List
     {
 
-        public class Query : IRequest<List<Ticket>>{}
+        public class Query : IRequest<List<Ticket>> { }
 
         public class Handler : IRequestHandler<Query, List<Ticket>>
         {
