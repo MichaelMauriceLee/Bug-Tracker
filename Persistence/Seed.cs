@@ -223,6 +223,29 @@ namespace Persistence
                     }
                 };
                 await context.Teams.AddRangeAsync(teams);
+
+                await context.SaveChangesAsync();
+            }
+
+
+            if (!context.Tickets.Any())
+            {
+                var tickets = new List<Ticket>
+                {
+                    new Ticket
+                    {
+                        Title = "SoftwareA",
+                        Description = "Very bad bug!"
+                    },
+                    new Ticket
+                    {
+                        Title = "SoftwareB",
+                        Description = "worse bug than the 612 lectures!"
+                    }
+                };
+
+                await context.Tickets.AddRangeAsync(tickets);
+
                 await context.SaveChangesAsync();
             }
         }
