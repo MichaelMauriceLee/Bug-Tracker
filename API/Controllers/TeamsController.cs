@@ -15,10 +15,10 @@ namespace API.Controllers
     {
         [HttpGet]
         public async Task<ActionResult<List.TeamsEnvelope>> List(int? limit, 
-            int? offset, bool isMember, bool isManager)
+            int? offset, bool isTeamMem, bool isManager)
         {
             return await Mediator.Send(new List.Query(limit, 
-                offset, isMember, isManager));
+                offset, isTeamMem, isManager));
         }
 
         [HttpGet("{id}")]
