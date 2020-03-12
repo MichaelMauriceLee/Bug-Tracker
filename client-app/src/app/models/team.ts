@@ -33,6 +33,7 @@ export class TeamFormValues implements ITeamFormValues {
 }
 
 export interface IMember {
+    id: string;
     username: string;
     displayName: string;
     image: string;

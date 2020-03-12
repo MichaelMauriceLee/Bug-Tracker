@@ -236,7 +236,6 @@ export default class TeamStore {
                         m => m.username !== this.rootStore.userStore.user!.username
                     );
                     this.team.isTeamMem = false;
-                    this.team.isManager = false;
                     this.teamRegistry.set(this.team.id, this.team);
                     this.loading = false;
                 }

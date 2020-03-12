@@ -24,6 +24,7 @@ export const setTeamProps = (team: ITeam, user: IUser) => {
 
 export const createMember = (user: IUser): IMember => {
     return {
+        id: user.id,
         displayName: user.displayName,
         isManager: false,
         username: user.username,

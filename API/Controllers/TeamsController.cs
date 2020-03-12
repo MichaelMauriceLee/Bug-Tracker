@@ -60,5 +60,12 @@ namespace API.Controllers
         {
             return await Mediator.Send(new Unbelong.Command{Id = id});
         }
+        
+        [HttpDelete("{id}/remove/{targetId}")]
+        [Authorize(Policy = "IsManager")]
+        public async Task<ActionResult<Unit>> Remove(Guid id, string targetId)
+        {
+            return await Mediator.Send(new Remove.Command{Id = id, TargetId = targetId});
+        }
     }
 }

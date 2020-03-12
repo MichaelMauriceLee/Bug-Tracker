@@ -87,7 +87,8 @@ const Teams = {
         requests.put(`/teams/${team.id}`, team),
     delete: (id: string) => requests.del(`/teams/${id}`),
     belong: (id: string) => requests.post(`/teams/${id}/belong`, {}),
-    unbelong: (id: string) => requests.del(`/teams/${id}/belong`)
+    unbelong: (id: string) => requests.del(`/teams/${id}/belong`),
+    remove: (id: string, targetId: string) => requests.del(`/teams/${id}/remove/${targetId}`),
 };
 
 const User = {
