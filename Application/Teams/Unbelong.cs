@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,14 +44,16 @@ namespace Application.Teams
 
                 var membership = await _context.TeamMembers
                     .SingleOrDefaultAsync(x => x.TeamId == team.Id && 
-                        x.AppUserId == user.Id); 
+                        x.AppUserId == user.Id);
+                
+                var queryable = _context.TeamMembers.Where(m => m.TeamId == team.Id && m.IsManager);
+                var managers = await queryable.ToListAsync();
 
                 if (membership == null)
                     return Unit.Value;   
                 
-                //TODO edit this so you can remove yourself if you there are other managers in the team
-                if (membership.IsManager)
-                    throw new RestException(HttpStatusCode.BadRequest, new {Attendance = "You cannot remove yourself as manager"});
+                if (membership.IsManager && managers.Count == 1)
+                    throw new RestException(HttpStatusCode.BadRequest, new {Attendance = "You cannot remove yourself due to being the last manager"});
 
                 _context.TeamMembers.Remove(membership);
 
