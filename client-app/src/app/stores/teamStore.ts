@@ -148,6 +148,7 @@ export default class TeamStore {
         try {
             await agent.Teams.create(team);
             const member = createMember(this.rootStore.userStore.user!);
+            team.isManager = true;
             member.isManager = true;
             let members = [];
             members.push(member);
@@ -185,19 +186,16 @@ export default class TeamStore {
         }
     };
 
-    @action deleteActivity = async (
-        event: SyntheticEvent<HTMLButtonElement>,
-        id: string
-    ) => {
+    @action deleteTeam = async (team: ITeam) => {
         this.submitting = true;
-        this.target = event.currentTarget.name;
         try {
-            await agent.Teams.delete(id);
+            await agent.Teams.delete(team.id);
             runInAction('deleting team', () => {
-                this.teamRegistry.delete(id);
+                this.teamRegistry.delete(team.id);
                 this.submitting = false;
                 this.target = '';
             });
+            history.push(`/teams/`);
         } catch (error) {
             runInAction('delete team error', () => {
                 this.submitting = false;

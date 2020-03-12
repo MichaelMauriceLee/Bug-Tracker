@@ -1,7 +1,10 @@
-import React from 'react';
-import {Segment, Grid, Icon} from 'semantic-ui-react';
+import React, { useContext } from 'react';
+import {Segment, Grid, Icon, Header, Button} from 'semantic-ui-react';
 import {ITeam} from '../../../app/models/team';
 import TeamMemberList from './TeamMemberList';
+import { Link } from 'react-router-dom';
+import { RootStoreContext } from '../../../app/stores/rootStore';
+import {v4 as uuid} from "uuid";
 
 /*
  * React component that renders information on the selected team
@@ -9,29 +12,73 @@ import TeamMemberList from './TeamMemberList';
  */
 
 const TeamDetailedInfo: React.FC<{ team: ITeam }> = ({team}) => {
+    //TODO need to change so its plural managers
+    const manager = team.members.filter(x => x.isManager)[0];
+    const rootStore = useContext(RootStoreContext);
+    const { belongTeam, unbelongTeam, loading, deleteTeam, submitting } = rootStore.teamStore;
+    const handleDelete = (values: any) => {
+        deleteTeam(team);
+    };
     return (
         <Segment.Group>
-            <Segment attached='top'>
+            <Segment
+                textAlign='center'
+                attached='top'
+                inverted
+                color='teal'
+                style={{ border: 'none' }}
+            >
+                <Header>Team Information</Header>
+            </Segment>
+            <Segment attached>
                 <Grid>
                     <Grid.Column width={1}>
-                        <Icon size='large' color='teal' name='info'/>
+                        <Icon size='large' color='teal' name='address card outline'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>Team Name:</p>
                         <p>{team.name}</p>
                     </Grid.Column>
                 </Grid>
             </Segment>
-            <Segment attached='top'>
+            <Segment attached>
                 <Grid>
                     <Grid.Column width={1}>
                         <Icon size='large' color='teal' name='info'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <p>Team Description:</p>
                         <p>{team.description}</p>
                     </Grid.Column>
                 </Grid>
+            </Segment>
+            <Segment clearing attached='bottom'>
+                {team.isManager ? (
+                    <Button.Group>
+                        <Button
+                            as={Link}
+                            to={`/manage/${team.id}`}
+                            color='orange'
+                            floated='left'
+                        >
+                            Manage Team Info
+                        </Button>
+                        <Button
+                            loading={submitting}
+                            onClick={handleDelete}
+                            color='red'
+                            floated='right'
+                        >
+                            Delete Team
+                        </Button>
+                    </Button.Group>
+                ) : team.isTeamMem ? (
+                    <Button loading={loading} onClick={unbelongTeam}>
+                        Resign from team
+                    </Button>
+                ) : (
+                    <Button loading={loading} onClick={belongTeam} color='teal'>
+                        Join Team
+                    </Button>
+                )}
             </Segment>
             <TeamMemberList members={team.members}/>
         </Segment.Group>

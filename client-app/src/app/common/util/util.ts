@@ -13,12 +13,12 @@ export const combineDateAndTime = (date: Date, time: Date) => {
 }
 
 export const setTeamProps = (team: ITeam, user: IUser) => {
-    // activity.isGoing = activity.attendees.some(
-    //     a => a.username === user.username
-    // )
-    // activity.isHost = activity.attendees.some(
-    //     a => a.username === user.username && a.isHost
-    // )
+    team.isTeamMem = team.members.some(
+        m => m.username === user.username
+    )
+    team.isManager = team.members.some(
+        m => m.username === user.username && m.isManager
+    )
     return team;
 }
 

@@ -12,6 +12,8 @@ export interface ITeam {
     name: string;
     description: string;
     members: IMember[];
+    isManager: boolean;
+    isTeamMem: boolean;
 }
 
 export interface ITeamFormValues {

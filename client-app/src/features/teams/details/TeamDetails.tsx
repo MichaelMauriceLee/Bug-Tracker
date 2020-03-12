@@ -7,7 +7,7 @@ import TeamDetailedInfo from './TeamDetailedInfo';
 import {RootStoreContext} from '../../../app/stores/rootStore';
 
 /*
- * React Component that holds all other components related to ActivityDetails
+ * React Component that holds all other components related to TeamDetails
  */
 
 interface DetailParams {
