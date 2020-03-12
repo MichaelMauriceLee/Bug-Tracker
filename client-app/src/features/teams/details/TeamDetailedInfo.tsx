@@ -13,13 +13,9 @@ import { observer } from 'mobx-react-lite';
  */
 
 const TeamDetailedInfo: React.FC<{ team: ITeam }> = ({team}) => {
-    //TODO need to change so its plural managers
     const manager = team.members.filter(x => x.isManager)[0];
     const rootStore = useContext(RootStoreContext);
     const { belongTeam, unbelongTeam, loading, deleteTeam, submitting } = rootStore.teamStore;
-    const handleDelete = (values: any) => {
-        deleteTeam(team);
-    };
     return (
         <Segment.Group>
             <Segment
@@ -64,7 +60,7 @@ const TeamDetailedInfo: React.FC<{ team: ITeam }> = ({team}) => {
                         </Button>
                         <Button
                             loading={submitting}
-                            onClick={handleDelete}
+                            onClick={()=> deleteTeam(team)}
                             color='red'
                             floated='right'
                         >
@@ -81,7 +77,7 @@ const TeamDetailedInfo: React.FC<{ team: ITeam }> = ({team}) => {
                     </Button>
                 )}
             </Segment>
-            <TeamMemberList members={team.members}/>
+            <TeamMemberList isManager={team.isManager} members={team.members}/>
         </Segment.Group>
     );
 };

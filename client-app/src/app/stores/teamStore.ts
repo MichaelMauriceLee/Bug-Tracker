@@ -247,4 +247,25 @@ export default class TeamStore {
             toast.error('Problem cancelling membership to team');
         }
     };
+
+    @action removeMember = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Teams.remove(this.team!.id, id);
+            runInAction(() => {
+                if (this.team) {
+                    this.team.members = this.team.members.filter(
+                        m => m.id !== id
+                    );
+                    this.teamRegistry.set(this.team.id, this.team);
+                    this.loading = false;
+                }
+            })
+        } catch (error) {
+            runInAction(() => {
+                this.loading = false;
+            })
+            toast.error('Problem removing member');
+        }
+    };
 }
