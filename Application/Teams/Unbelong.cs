@@ -45,15 +45,12 @@ namespace Application.Teams
                 var membership = await _context.TeamMembers
                     .SingleOrDefaultAsync(x => x.TeamId == team.Id && 
                         x.AppUserId == user.Id);
-                
-                var queryable = _context.TeamMembers.Where(m => m.TeamId == team.Id && m.IsManager);
-                var managers = await queryable.ToListAsync();
 
                 if (membership == null)
                     return Unit.Value;   
                 
-                if (membership.IsManager && managers.Count == 1)
-                    throw new RestException(HttpStatusCode.BadRequest, new {Attendance = "You cannot remove yourself due to being the last manager"});
+                if (membership.IsManager)
+                    throw new RestException(HttpStatusCode.BadRequest, new {Attendance = "You cannot remove yourself due to being the manager"});
 
                 _context.TeamMembers.Remove(membership);
 
