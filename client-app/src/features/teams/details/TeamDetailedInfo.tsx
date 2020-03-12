@@ -5,6 +5,7 @@ import TeamMemberList from './TeamMemberList';
 import { Link } from 'react-router-dom';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import {v4 as uuid} from "uuid";
+import { observer } from 'mobx-react-lite';
 
 /*
  * React component that renders information on the selected team
@@ -85,4 +86,4 @@ const TeamDetailedInfo: React.FC<{ team: ITeam }> = ({team}) => {
     );
 };
 
-export default TeamDetailedInfo;
+export default observer(TeamDetailedInfo);

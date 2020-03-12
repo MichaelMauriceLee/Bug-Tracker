@@ -213,6 +213,7 @@ export default class TeamStore {
             runInAction(() => {
                 if (this.team) {
                     this.team.members.push(member);
+                    this.team.isTeamMem = true;
                     this.teamRegistry.set(this.team.id, this.team);
                     this.loading = false;
                 }
@@ -232,8 +233,10 @@ export default class TeamStore {
             runInAction(() => {
                 if (this.team) {
                     this.team.members = this.team.members.filter(
-                        a => a.username !== this.rootStore.userStore.user!.username
+                        m => m.username !== this.rootStore.userStore.user!.username
                     );
+                    this.team.isTeamMem = false;
+                    this.team.isManager = false;
                     this.teamRegistry.set(this.team.id, this.team);
                     this.loading = false;
                 }
