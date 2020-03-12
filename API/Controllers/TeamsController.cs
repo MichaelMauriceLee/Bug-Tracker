@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Application.Activities;
 using Application.Teams;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

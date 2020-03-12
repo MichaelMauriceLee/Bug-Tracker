@@ -1,7 +1,7 @@
 /*
  * Data Transfer Object to allow entity framework to get data w/o self references
  */
-namespace Application.Activities
+namespace Application.Teams
 {
     public class MemberDto
     {
