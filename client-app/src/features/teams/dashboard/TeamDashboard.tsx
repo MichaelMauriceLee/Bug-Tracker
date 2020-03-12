@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Grid, Loader} from 'semantic-ui-react';
+import {Grid, Loader, Button} from 'semantic-ui-react';
 import TeamList from './TeamList';
 import {observer} from 'mobx-react-lite';
 import {RootStoreContext} from '../../../app/stores/rootStore';
 import InfiniteScroll from 'react-infinite-scroller';
 import TeamListItemPlaceholder from './TeamListItemPlaceholder';
 import TeamFilters from './TeamFilters';
+import { NavLink } from 'react-router-dom';
 
 /*
  * React component that contains a list of activities
@@ -51,6 +52,12 @@ const TeamDashboard: React.FC = () => {
             </Grid.Column>
             <Grid.Column width={6}>
                 <TeamFilters />
+                <Button
+                    as={NavLink}
+                    to='/createTeam'
+                    positive
+                    content='Create Team'
+                />
             </Grid.Column>
             <Grid.Column width={10}>
                 <Loader active={loadingNext} />

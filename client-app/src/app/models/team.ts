@@ -12,6 +12,8 @@ export interface ITeam {
     name: string;
     description: string;
     members: IMember[];
+    isManager: boolean;
+    isTeamMem: boolean;
 }
 
 export interface ITeamFormValues {
@@ -31,6 +33,7 @@ export class TeamFormValues implements ITeamFormValues {
 }
 
 export interface IMember {
+    id: string;
     username: string;
     displayName: string;
     image: string;

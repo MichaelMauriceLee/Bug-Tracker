@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Activities;
 using Application.Interfaces;
 using AutoMapper;
 using Domain;
@@ -23,17 +22,17 @@ namespace Application.Teams
         }
         public class Query : IRequest<TeamsEnvelope>
         {
-            public Query(int? limit, int? offset, bool isMember, bool isManager)
+            public Query(int? limit, int? offset, bool isTeamMem, bool isManager)
             {
                 Limit = limit;
                 Offset = offset;
-                IsMember = isMember;
+                IsTeamMem = isTeamMem;
                 IsManager = isManager;
             }
-            public int? Limit { get; set; }
-            public int? Offset { get; set; }
-            public bool IsMember { get; set; }
-            public bool IsManager { get; set; }
+            public int? Limit { get; }
+            public int? Offset { get; }
+            public bool IsTeamMem { get; }
+            public bool IsManager { get; }
         }
 
         public class Handler : IRequestHandler<Query, TeamsEnvelope>
@@ -51,16 +50,15 @@ namespace Application.Teams
             public async Task<TeamsEnvelope> Handle(Query request, CancellationToken cancellationToken)
             {
                 var queryable = _context.Teams
-                    // .Where(x => x.Name == request.Name)
-                    // .OrderBy(x => x.Name)
+                    .OrderBy(x => x.Name)
                     .AsQueryable();
 
-                if (request.IsMember && !request.IsManager)
+                if (request.IsTeamMem && !request.IsManager)
                 {
                     queryable = queryable.Where(x => x.TeamMembers.Any(a => a.AppUser.UserName == _userAccessor.GetCurrentUsername()));
                 }
 
-                if (request.IsManager && !request.IsMember)
+                if (request.IsManager && !request.IsTeamMem)
                 {
                     queryable = queryable.Where(x => x.TeamMembers.Any(a => a.AppUser.UserName == _userAccessor.GetCurrentUsername() && a.IsManager));
                 }

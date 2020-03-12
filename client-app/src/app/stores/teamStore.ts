@@ -148,6 +148,7 @@ export default class TeamStore {
         try {
             await agent.Teams.create(team);
             const member = createMember(this.rootStore.userStore.user!);
+            team.isManager = true;
             member.isManager = true;
             let members = [];
             members.push(member);
@@ -185,19 +186,16 @@ export default class TeamStore {
         }
     };
 
-    @action deleteActivity = async (
-        event: SyntheticEvent<HTMLButtonElement>,
-        id: string
-    ) => {
+    @action deleteTeam = async (team: ITeam) => {
         this.submitting = true;
-        this.target = event.currentTarget.name;
         try {
-            await agent.Teams.delete(id);
+            await agent.Teams.delete(team.id);
             runInAction('deleting team', () => {
-                this.teamRegistry.delete(id);
+                this.teamRegistry.delete(team.id);
                 this.submitting = false;
                 this.target = '';
             });
+            history.push(`/teams/`);
         } catch (error) {
             runInAction('delete team error', () => {
                 this.submitting = false;
@@ -215,6 +213,7 @@ export default class TeamStore {
             runInAction(() => {
                 if (this.team) {
                     this.team.members.push(member);
+                    this.team.isTeamMem = true;
                     this.teamRegistry.set(this.team.id, this.team);
                     this.loading = false;
                 }
@@ -234,8 +233,9 @@ export default class TeamStore {
             runInAction(() => {
                 if (this.team) {
                     this.team.members = this.team.members.filter(
-                        a => a.username !== this.rootStore.userStore.user!.username
+                        m => m.username !== this.rootStore.userStore.user!.username
                     );
+                    this.team.isTeamMem = false;
                     this.teamRegistry.set(this.team.id, this.team);
                     this.loading = false;
                 }
@@ -245,6 +245,27 @@ export default class TeamStore {
                 this.loading = false;
             })
             toast.error('Problem cancelling membership to team');
+        }
+    };
+
+    @action removeMember = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Teams.remove(this.team!.id, id);
+            runInAction(() => {
+                if (this.team) {
+                    this.team.members = this.team.members.filter(
+                        m => m.id !== id
+                    );
+                    this.teamRegistry.set(this.team.id, this.team);
+                    this.loading = false;
+                }
+            })
+        } catch (error) {
+            runInAction(() => {
+                this.loading = false;
+            })
+            toast.error('Problem removing member');
         }
     };
 }

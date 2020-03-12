@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Application.Activities;
 using Application.Teams;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,10 +15,10 @@ namespace API.Controllers
     {
         [HttpGet]
         public async Task<ActionResult<List.TeamsEnvelope>> List(int? limit, 
-            int? offset, bool isMember, bool isManager)
+            int? offset, bool isTeamMem, bool isManager)
         {
             return await Mediator.Send(new List.Query(limit, 
-                offset, isMember, isManager));
+                offset, isTeamMem, isManager));
         }
 
         [HttpGet("{id}")]
@@ -60,6 +59,13 @@ namespace API.Controllers
         public async Task<ActionResult<Unit>> Unbelong(Guid id)
         {
             return await Mediator.Send(new Unbelong.Command{Id = id});
+        }
+        
+        [HttpDelete("{id}/remove/{targetId}")]
+        [Authorize(Policy = "IsManager")]
+        public async Task<ActionResult<Unit>> Remove(Guid id, string targetId)
+        {
+            return await Mediator.Send(new Remove.Command{Id = id, TargetId = targetId});
         }
     }
 }
