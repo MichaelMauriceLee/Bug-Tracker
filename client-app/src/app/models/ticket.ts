@@ -9,13 +9,5 @@ export interface ITicket {  //This is the strucure of our Ticket object at the m
     title: string;
     description: string;
     category: string;
-    submissionDate: Date;
-    acceptanceDate: Date;
-    dueDate: Date;
-    priority: string;
-    isAccepted: string;
-    SubmitterId: string;
-    teamId: string;
-    teamId1: string;
-    assigneeId: string;
+    submissionDate: string;
 }

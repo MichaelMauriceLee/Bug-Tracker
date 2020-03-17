@@ -1,7 +1,7 @@
 import React, { useContext, Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { RootStoreContext } from '../../../app/stores/rootStore';
-import { Segment, Item } from 'semantic-ui-react';
+import { Segment, Item, Label } from 'semantic-ui-react';
 import TicketListItem from './TicketListItem';
 
 const TicketList: React.FC = () => {
@@ -10,15 +10,22 @@ const TicketList: React.FC = () => {
 
 
     return (
-        
-                <Segment>
+        <Fragment>
+            {ticketsByDate.map(([group, tickets]) => (
+                <Fragment key = {group}>
+                <Label size='large' color = 'blue'>
+                    {group}
+                </Label>
+                <Segment clearing>
                     <Item.Group divided>
-                        {ticketsByDate.map(ticket => (
+                        {tickets.map(ticket => (
                             <TicketListItem key = {ticket.id} ticket = {ticket} />
                         ))}
                     </Item.Group>
                 </Segment>
-        
+                </Fragment>
+            ))}
+        </Fragment>
     )
 }
 

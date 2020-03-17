@@ -23,7 +23,19 @@ export default class TicketStore {
     @observable target = '';
 
     @computed get ticketsByDate() {
-        return Array.from(this.ticketRegistry.values())
+        return this.groupTicketsByCategory(Array.from(this.ticketRegistry.values()))
+    }
+
+    groupTicketsByCategory(tickets: ITicket[]) {
+        const sortedTickets = tickets.sort(
+            (a, b) => Date.parse(b.submissionDate) - Date.parse(a.submissionDate)
+        )
+        return Object.entries(sortedTickets.reduce((tickets, ticket) => {
+            const date = ticket.submissionDate.split('T')[0];
+            const category = ticket.category;
+            tickets[category] = tickets[category] ? [...tickets[category], ticket] : [ticket];
+            return tickets;
+        }, {} as {[key: string]: ITicket[]}));
     }
 
 

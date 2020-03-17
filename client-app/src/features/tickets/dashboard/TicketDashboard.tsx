@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react"
 import { RootStoreContext } from "../../../app/stores/rootStore"
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { Grid } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import TicketList from "./TicketList";
+import { Link } from "react-router-dom";
 
 /*
  * TODO
@@ -23,11 +24,16 @@ const TicketDashboard = () => {
 
     return (
         <Grid>
-            <Grid.Column width = {10}>
-                <TicketList />
-            </Grid.Column>
-            <Grid.Column width = {6}>
+            <Grid.Column width = {4}>
                 <h2>Ticket Filters</h2> 
+                <Button
+                    as = {Link} to="/createTicket"
+                    positive 
+                    content = "Create Ticket"
+                    />
+            </Grid.Column>
+            <Grid.Column width = {12}>
+                <TicketList />
             </Grid.Column>
         </Grid>
     )

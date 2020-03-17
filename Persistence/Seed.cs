@@ -240,7 +240,7 @@ namespace Persistence
                     new Ticket
                     {
                         Title = "SoftwareB",
-                        Description = "worse bug than the 612 lectures!"
+                        Description = "Bug during initialization."
                     }
                 };
 

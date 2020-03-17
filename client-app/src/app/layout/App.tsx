@@ -25,6 +25,8 @@ import TicketDashboard from '../../features/tickets/dashboard/TicketDashboard';
 import InfoDashboard from '../../features/statistics/StatisticsDashboard'
 import { ITicket } from '../models/ticket';
 import axios from 'axios'
+import TicketDetails from '../../features/tickets/details/TicketDetails';
+import TicketForm from '../../features/tickets/form/TicketForm';
 
 /*
  * Main React component that houses all other components
@@ -77,7 +79,13 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
                                     path={['/createTeam', '/manage/:id']}
                                     component={TeamForm}
                                 />
-                                <PrivateRoute path='/tickets' component={TicketDashboard}/>
+                                <PrivateRoute exact path='/tickets' component={TicketDashboard}/>
+                                <PrivateRoute path='/tickets/:id' component={TicketDetails} />
+                                <PrivateRoute 
+                                    key = {location.key} 
+                                        path={['/createTicket', '/manageTicket/:id']} 
+                                        component={TicketForm} 
+                                    />
                                 <PrivateRoute path='/profile/:username' component={ProfilePage}/>
                                 <Route component={NotFound}/>
                             </Switch>

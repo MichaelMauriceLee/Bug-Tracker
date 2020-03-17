@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const TicketListItem: React.FC<{ticket: ITicket}> = ({ticket}) => {
+const TicketListItem: React.FC<{ticket: ITicket}> = ({ ticket }) => {
     return (
         <Item key = {ticket.id}>
         <Item.Content>
@@ -16,12 +16,11 @@ const TicketListItem: React.FC<{ticket: ITicket}> = ({ticket}) => {
           </Item.Description>
           <Item.Extra>
               <Button
-                 as={Link} to={`/activities/${ticket.id}`}
+                 as={Link} to={`/tickets/${ticket.id}`}
                 floated = "right" 
                 content = "View" 
                 color = "blue"
                 />
-              <Label basic content = {ticket.category} color = "blue"/>
           </Item.Extra>
         </Item.Content>
         </Item>
