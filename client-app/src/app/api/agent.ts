@@ -4,6 +4,7 @@ import {history} from '../..';
 import {toast} from 'react-toastify';
 import {IUser, IUserFormValues} from '../models/user';
 import {IProfile, IPhoto} from '../models/profile';
+import { ITicket } from '../models/ticket';
 
 /*
  * File that specifies REST endpoints and handles communication to the server
@@ -111,11 +112,16 @@ const Profiles = {
 };
 
 const Tickets = {
-    //TODO fill in HTTP methods here
+    list: (): Promise<ITicket[]> => requests.get('/tickets'),
+    details: (id: string) => requests.get(`/tickets/${id}`),
+    create: (ticket: ITicket) => requests.post('/tickets', ticket),
+    update: (ticket: ITicket) => requests.put(`/tickets/${ticket.id}`, ticket),
+    delete: (id: string) => requests.del(`/tickets/${id}`)
 }
 
 export default {
     Teams,
     User,
-    Profiles
+    Profiles,
+    Tickets
 };

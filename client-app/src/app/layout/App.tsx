@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect} from 'react';
+import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {Container} from 'semantic-ui-react';
 import NavBar from '../../features/nav/NavBar';
 import NavSideBar from '../../features/nav/NavSideBar';
@@ -21,18 +21,33 @@ import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import PrivateRoute from './PrivateRoute';
-import TicketDashboard from '../../features/tickets/TicketDashboard';
+import TicketDashboard from '../../features/tickets/dashboard/TicketDashboard';
 import InfoDashboard from '../../features/statistics/StatisticsDashboard'
+import { ITicket } from '../models/ticket';
+import axios from 'axios'
+import TicketDetails from '../../features/tickets/details/TicketDetails';
+import TicketForm from '../../features/tickets/form/TicketForm';
 
 /*
  * Main React component that houses all other components
  * This component mainly specifies routes for react router
  */
 
+
 const App: React.FC<RouteComponentProps> = ({location}) => {
     const rootStore = useContext(RootStoreContext);
     const {setAppLoaded, token, appLoaded} = rootStore.commonStore;
     const {getUser} = rootStore.userStore;
+    const [tickets, setTickets] = useState<ITicket[]>([])
+
+    // useEffect(()=> {
+    //     axios.get<ITicket[]>("http://localhost:5000/api/activities").then(response => {
+    //         setTickets(response.data)
+    //     });
+    // }, []);    //adding this second parameter of an empty array ensures that useEffect runs one time only! VERY IMPORTANT, otherwise we enter a loop!
+    // right now we are using componentDidMount indicated by the [], we can also use the other lifecycle methods as we'll see later
+
+
 
     useEffect(() => {
         if (token) {
@@ -64,7 +79,13 @@ const App: React.FC<RouteComponentProps> = ({location}) => {
                                     path={['/createTeam', '/manage/:id']}
                                     component={TeamForm}
                                 />
-                                <PrivateRoute path='/tickets' component={TicketDashboard}/>
+                                <PrivateRoute exact path='/tickets' component={TicketDashboard}/>
+                                <PrivateRoute path='/tickets/:id' component={TicketDetails} />
+                                <PrivateRoute 
+                                    key = {location.key} 
+                                        path={['/createTicket', '/manageTicket/:id']} 
+                                        component={TicketForm} 
+                                    />
                                 <PrivateRoute path='/profile/:username' component={ProfilePage}/>
                                 <Route component={NotFound}/>
                             </Switch>
