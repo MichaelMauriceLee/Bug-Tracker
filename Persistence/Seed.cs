@@ -234,13 +234,27 @@ namespace Persistence
                 {
                     new Ticket
                     {
-                        Title = "SoftwareA",
-                        Description = "Very bad bug!"
+                        Title = "Software A Bug 1",
+                        Description = "Glitches in UI",
+                        Category = "Software A"
                     },
                     new Ticket
                     {
-                        Title = "SoftwareB",
-                        Description = "Bug during initialization."
+                        Title = "Software B Bug 1",
+                        Description = "Bug during initialization.",
+                        Category = "Software B"
+                    },
+                    new Ticket
+                    {
+                        Title = "Software A Bug 2",
+                        Description = "Freezing up at times.",
+                        Category = "Software A"
+                    },
+                    new Ticket
+                    {
+                        Title = "Software B Bug 2",
+                        Description = "Slow to respond with many tasks.",
+                        Category = "Software B"
                     }
                 };
 
