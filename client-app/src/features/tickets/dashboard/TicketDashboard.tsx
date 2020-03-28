@@ -24,6 +24,10 @@ const TicketDashboard = () => {
 
     return (
         <Grid>
+            <Grid.Column width = {1}></Grid.Column>
+            <Grid.Column width = {11}>
+                <TicketList />
+            </Grid.Column>
             <Grid.Column width = {4}>
                 <h2>Ticket Filters</h2> 
                 <Button
@@ -31,9 +35,6 @@ const TicketDashboard = () => {
                     positive 
                     content = "Create Ticket"
                     />
-            </Grid.Column>
-            <Grid.Column width = {12}>
-                <TicketList />
             </Grid.Column>
         </Grid>
     )

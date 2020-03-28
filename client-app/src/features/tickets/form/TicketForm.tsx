@@ -1,10 +1,30 @@
-import React, { useContext, useState, useEffect, FormEvent } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import {v4 as uuid} from 'uuid';
 import { RootStoreContext } from '../../../app/stores/rootStore'
-import { ITicket } from '../../../app/models/ticket';
-import { Segment, Form, Button } from 'semantic-ui-react';
+import { TicketFormValues } from '../../../app/models/ticket';
+import { Segment, Form, Button, Grid } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
+import { Form as FinalForm, Field } from 'react-final-form'
+import TextInput from '../../../app/common/form/TextInput';
+import TextAreaInput from '../../../app/common/form/TextAreaInput';
+import SelectInput from '../../../app/common/form/SelectInput';
+import { ticketCategory } from '../../../app/common/options/ticketCategoryOptions';
+import DateInput from '../../../app/common/form/DateInput';
+import { combineTicketDateAndTime } from '../../../app/common/util/util';
+import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
+
+
+const validate = combineValidators({
+    title: isRequired({message: "The Ticket Title is required"}),
+    description: composeValidators(
+        isRequired('Description'),
+        hasLengthGreaterThan(4)({message: "Description needs to be at least 5 parameters"})
+    )(),
+    category: isRequired('Category'),
+    submissionDate: isRequired("Submission Date"),
+    time: isRequired("Time")
+})
 
 
 interface DetailParams {
@@ -19,87 +39,104 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
         createTicket,
         editTicket,
         submitting,
-        ticket: initialFormState,
         loadTicket,
-        clearTicket
     } = rootStore.ticketStore;
 
-    const [ticket, setTicket] = useState<ITicket>({
-        id: '',
-        title: '',
-        description: '',
-        category: '',
-        submissionDate: ''
-    })
-
+    const [ticket, setTicket] = useState(new TicketFormValues());
+    const [loading, setLoading] = useState(false);   //local state for the loading
 
     useEffect(() => {
-        if (match.params.id && ticket.id.length === 0) {
+        if (match.params.id) {
+            setLoading(true);
             loadTicket(match.params.id).then(
-                () => initialFormState && setTicket(initialFormState)
-                );
+                (ticket) =>  setTicket(new TicketFormValues(ticket))
+            ).finally(()=> setLoading(false));
         }
-        return  () => {
-            clearTicket();
-        }
-    }, [loadTicket, clearTicket, match.params.id, initialFormState, ticket.id.length]);
+    }, [loadTicket, match.params.id]);
 
-    const handleInputChange = (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {   //event that we get from our onchange handler
-        const {name, value} = event.currentTarget;
-        setTicket({...ticket, [name]: value})
-    }
 
-    const handleSubmit = () => {
-        if (ticket.id.length === 0){
+    const handleFinalFormSubmit = (values: any) => {
+        const dateAndTime = combineTicketDateAndTime(values.submissionDate, values.time);
+        const{submissionDate, time, ...ticket} = values;
+        ticket.submissionDate = dateAndTime;
+        if (!ticket.id){
             let newTicket = {
                 ...ticket,
                 id: uuid()    //this creates a guid for our new ticket
             }
-            createTicket(newTicket).then(() => history.push(`/tickets/${newTicket.id}`));
+            createTicket(newTicket);
         }else {
-            editTicket(ticket).then(() => history.push(`/tickets/${ticket.id}`));
+            editTicket(ticket);
         }
     }
 
     return (
-        <div>
+        <Grid>
+            <Grid.Column width={2}></Grid.Column>
+            <Grid.Column width={10}>
             <Segment clearing>
-                <Form onSubmit = {handleSubmit}>
-                    <Form.Input
-                        onChange={handleInputChange}
-                        name='title'
-                        placeholder = "Title"
-                        value = {ticket.title}
-                    />
-                    <Form.TextArea 
-                        onChange={handleInputChange}
-                        name='description'
-                        rows={2}
-                        placeholder = "Description" 
-                        value = {ticket.description}
-                     />
-                    <Form.Input
-                        onChange={handleInputChange}
-                        name='category' 
-                        placeholder = "Category" 
-                        value = {ticket.category}
-                    />
-                    <Form.Input
-                        onChange={handleInputChange}
-                        name='submissionDate' 
-                        type='datetime-local' 
-                        placeholder = "submissionDate" 
-                        value = {ticket.submissionDate}
-                    />
-                    <Button loading={submitting} floated='right' positive type = 'submit' content = "Submit" />
-                    <Button 
-                    onClick={() => history.push('/tickets')}
-                    floated='right' 
-                    type = 'button' 
-                    content = "Cancel" />
-                </Form>
+                <FinalForm 
+                validate = {validate}
+                    initialValues = {ticket}
+                    onSubmit = {handleFinalFormSubmit}
+                    render = {({handleSubmit, invalid, pristine}) => (
+                        <Form onSubmit = {handleSubmit} loading = {loading}>
+                            <Field
+                                name='title'
+                                placeholder = "Title"
+                                value = {ticket.title}
+                                component = {TextInput}
+                            />
+                            <Field
+                                name='description'
+                                placeholder = "Description" 
+                                value = {ticket.description}
+                                component = {TextAreaInput}
+                            />
+                            <Field
+                                component = {SelectInput}
+                                options = {ticketCategory}
+                                name='category' 
+                                placeholder = "Category" 
+                                value = {ticket.category}
+                            />
+                            <Form.Group widths = 'equal'>
+                            <Field
+                                component = {DateInput}
+                                name='submissionDate' 
+                                date = {true}
+                                placeholder = "Submission Date" 
+                                value = {ticket.submissionDate}
+                            />
+                             <Field
+                                component = {DateInput}
+                                name='time'
+                                time = {true} 
+                                placeholder = "Time" 
+                                value = {ticket.time}
+                            />
+                            </Form.Group>
+                            <Button 
+                            loading={submitting}
+                            disabled = {loading || invalid || pristine}
+                             floated='right'
+                             positive 
+                             type = 'submit' 
+                             content = "Submit" 
+                             />
+                            <Button 
+                            onClick={ticket.id ? () => history.push(`/tickets/${ticket.id}`) : () => history.push('/tickets')}
+                            disabled = {loading}
+                            floated='right' 
+                            type = 'button' 
+                            content = "Cancel" 
+                            />
+                        </Form>
+                    )}
+                />
             </Segment>
-        </div>
+            </Grid.Column>
+        </Grid>
     )
 }
 

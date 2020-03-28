@@ -9,5 +9,27 @@ export interface ITicket {  //This is the strucure of our Ticket object at the m
     title: string;
     description: string;
     category: string;
-    submissionDate: string;
+    submissionDate: Date;
+}
+
+
+export interface ITicketFormValues extends Partial<ITicket>{
+    time?: Date
+}
+
+
+export class TicketFormValues implements ITicketFormValues {
+    id?: string = "";
+    title: string = "";
+    description: string = "";
+    category: string = "";
+    submissionDate?: Date = undefined;
+    time?: Date = undefined;
+
+    constructor(init?: ITicketFormValues) {
+        if (init && init.submissionDate) {
+            init.time = init.submissionDate
+        }
+        Object.assign(this, init);
+    }
 }

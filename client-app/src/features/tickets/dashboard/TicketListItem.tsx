@@ -1,7 +1,8 @@
 import React from 'react'
 import { ITicket } from '../../../app/models/ticket';
-import { Item, Button, Label } from 'semantic-ui-react';
+import { Item, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 
 
@@ -10,7 +11,7 @@ const TicketListItem: React.FC<{ticket: ITicket}> = ({ ticket }) => {
         <Item key = {ticket.id}>
         <Item.Content>
           <Item.Header as='a'>{ticket.title}</Item.Header>
-          <Item.Meta>{ticket.submissionDate}</Item.Meta>
+          <Item.Meta>{format(ticket.submissionDate, 'h:mm a')}</Item.Meta>
           <Item.Description>
               <div>{ticket.description}</div>
           </Item.Description>
