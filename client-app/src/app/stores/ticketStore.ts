@@ -1,9 +1,10 @@
 ﻿import {RootStore} from "./rootStore";
-import {reaction, configure, observable, runInAction, action, computed} from "mobx";
-import { createContext, SyntheticEvent } from "react";
+import {configure, observable, runInAction, action, computed} from "mobx";
+import { SyntheticEvent } from "react";
 import { ITicket } from '../models/ticket'
 import agent from "../api/agent";
-import { isThursdayWithOptions } from "date-fns/fp";
+import { history } from "../..";
+import { toast } from "react-toastify";
 
 configure({enforceActions: "always"});
 
@@ -28,10 +29,10 @@ export default class TicketStore {
 
     groupTicketsByCategory(tickets: ITicket[]) {
         const sortedTickets = tickets.sort(
-            (a, b) => Date.parse(b.submissionDate) - Date.parse(a.submissionDate)
+            (a, b) => b.submissionDate.getTime() - a.submissionDate.getTime()
         )
         return Object.entries(sortedTickets.reduce((tickets, ticket) => {
-            const date = ticket.submissionDate.split('T')[0];
+            const date = ticket.submissionDate.toISOString().split('T')[0];
             const category = ticket.category;
             tickets[category] = tickets[category] ? [...tickets[category], ticket] : [ticket];
             return tickets;
@@ -45,6 +46,7 @@ export default class TicketStore {
             const tickets = await agent.Tickets.list();
             runInAction('loading tickets', () => {
                 tickets.forEach((ticket) => {
+                    ticket.submissionDate = new Date (ticket.submissionDate);
                     this.ticketRegistry.set(ticket.id, ticket);
                 });
                 this.loadingInitial = false;
@@ -62,14 +64,18 @@ export default class TicketStore {
         let ticket = this.getTicket(id);
         if(ticket) {
             this.ticket = ticket;
+            return ticket;
         } else{
             this.loadingInitial = true;
             try{
                 ticket = await agent.Tickets.details(id);
                 runInAction('getting ticket', ()=>{
+                    ticket.submissionDate = new Date(ticket.submissionDate);
                     this.ticket = ticket;
+                    this.ticketRegistry.set(ticket.id, ticket);
                     this.loadingInitial = false;
                 })
+                return ticket;
             } catch(error){
                 runInAction('get ticket error', () => {
                     this.loadingInitial = false;
@@ -96,11 +102,13 @@ export default class TicketStore {
                 this.ticketRegistry.set(ticket.id, ticket);
                 this.submitting = false;
             });
+            history.push(`/tickets/${ticket.id}`);
         } catch(error) {
             runInAction('create ticket error', () => {
                 this.submitting = false;
             })
-            console.log(error);
+            toast.error("Problem submitting data");
+            console.log(error.response);
         }
     }
 
@@ -113,11 +121,13 @@ export default class TicketStore {
                 this.ticket = ticket;
                 this.submitting = false;
             })
+            history.push(`/tickets/${ticket.id}`);
         } catch(error) {
             runInAction('edit ticket error', () => {
                 this.submitting = false;
             })
-            console.log(error);
+            toast.error("Problem submitting data");
+            console.log(error.response);
         }
     }
 

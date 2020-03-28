@@ -12,6 +12,17 @@ export const combineDateAndTime = (date: Date, time: Date) => {
     return new Date(dateString + 'T' + timeString);
 }
 
+export const combineTicketDateAndTime = (submissionDate: Date, time: Date) => {
+    const timeString = time.getHours() + ":" + time.getMinutes() + ":00";
+
+    const year = submissionDate.getFullYear();
+    const month = submissionDate.getMonth() + 1;
+    const day = submissionDate.getDate();
+    const submissionDateString = `${year}-${month}-${day}`;
+
+    return new Date(submissionDateString + " " + timeString);
+}
+
 export const setTeamProps = (team: ITeam, user: IUser) => {
     team.isTeamMem = team.members.some(
         m => m.username === user.username

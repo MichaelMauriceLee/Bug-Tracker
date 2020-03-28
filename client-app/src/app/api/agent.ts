@@ -23,6 +23,7 @@ axios.interceptors.request.use(
     }
 );
 
+//here we are intercepting the response we get from the server
 axios.interceptors.response.use(undefined, error => {
     if (error.message === 'Network Error' && !error.response) {
         toast.error('Network error - make sure API is running!');
