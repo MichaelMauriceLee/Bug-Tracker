@@ -31,7 +31,7 @@ namespace Application.Tickets
                 var ticket = await _context.Tickets.FindAsync(request.Id);
 
                 if(ticket == null){
-                    throw new RestException(HttpStatusCode.NotFound, new {activity = "Not found"});
+                    throw new RestException(HttpStatusCode.NotFound, new {ticket = "Not found"});
                 }
                 return ticket;
             }
