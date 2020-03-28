@@ -60,7 +60,7 @@ namespace Application.Tickets
                 var ticket = await _context.Tickets.FindAsync(request.Id);
 
                 if(ticket == null){
-                    throw new RestException(HttpStatusCode.NotFound, new {activity = "Not found"});
+                    throw new RestException(HttpStatusCode.NotFound, new {ticket = "Not found"});
                 }
 
                 //?? is the coalescing operator. If the left side of ?? is null, then the right hand side will get executed
