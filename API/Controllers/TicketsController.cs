@@ -24,13 +24,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Ticket>>> List ()       //We will be returning a list of tickets
+        public async Task<ActionResult<List<TicketDTO>>> List ()       //We will be returning a list of tickets
         {
             return await _mediator.Send(new List.Query());          //Sending a message to the List Query Handler
         }
 
         [HttpGet("{id}")]    //Get a particular ticket --> pass in id as a root parameter
-        public async Task<ActionResult<Ticket>> Details(Guid id)
+        public async Task<ActionResult<TicketDTO>> Details(Guid id)
         {
             return await _mediator.Send(new Details.Query{Id = id});      //take id from root paramter and see if it matches any of the guids of the tickets in the DB
         }
