@@ -71,6 +71,7 @@ namespace Application.Tickets
                 ticket.Priority = request.Priority ?? ticket.Priority;
                 ticket.SubmissionDate = request.SubmissionDate ?? ticket.SubmissionDate;
                 ticket.SubmitterId = request.SubmitterId ?? ticket.SubmitterId;
+                ticket.AssigneeId = request.AssigneeId ?? ticket.AssigneeId;
 
                 var success = await _context.SaveChangesAsync() > 0;     //if we get > 0, this means that our addition of the new ticket was successful
 
