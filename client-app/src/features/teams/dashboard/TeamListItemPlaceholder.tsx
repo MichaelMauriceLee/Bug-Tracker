@@ -2,10 +2,10 @@ import React, {Fragment} from 'react';
 import {Segment, Button, Placeholder} from 'semantic-ui-react';
 
 /*
- * React component used as a placeholder for ActivityListItem while loading
+ * React component used as a placeholder for TeamListItem while loading
  */
 
-const ActivityListItemPlaceholder = () => {
+const TeamListItemPlaceholder = () => {
     return (
         <Fragment>
             <Placeholder fluid style={{marginTop: 50}}>
@@ -36,4 +36,4 @@ const ActivityListItemPlaceholder = () => {
         </Fragment>
     );
 };
-export default ActivityListItemPlaceholder;
+export default TeamListItemPlaceholder;

@@ -14,7 +14,7 @@ interface DetailParams {
     id: string;
 }
 
-const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> =
+const TeamDetails: React.FC<RouteComponentProps<DetailParams>> =
     ({
          match,
          history
@@ -39,4 +39,4 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> =
         );
     };
 
-export default observer(ActivityDetails);
+export default observer(TeamDetails);
