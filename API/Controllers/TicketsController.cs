@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Application.Tickets;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -42,6 +43,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]       //Edit a particular ticket --> pass in id as root parameter
+        [Authorize(Policy = "IsSubmitter")]
         public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
         {
             command.Id = id;
@@ -49,9 +51,24 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "IsSubmitter")]
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
             return await _mediator.Send(new Delete.Command{Id = id});
+        }
+
+        [HttpPut("{id}/assign")]
+        public async Task<ActionResult<Unit>> Assign(Guid id, Assign.Command command)
+        {
+            command.Id = id;
+            return await _mediator.Send(command);
+        }
+
+        [HttpPut("{id}/remove")]
+        public async Task<ActionResult<Unit>> Remove(Guid id, Remove.Command command)
+        {
+            command.Id = id;
+            return await _mediator.Send(command);
         }
 
     }
