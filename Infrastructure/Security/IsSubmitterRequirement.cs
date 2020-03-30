@@ -35,8 +35,9 @@ namespace Infrastructure.Security
             var ticket = _context.Tickets.FindAsync(ticketId).Result;
 
             var submitter = _context.TeamMembers.FirstOrDefault(x => x.AppUserId == ticket.SubmitterId);
+            var assignee = _context.TeamMembers.FirstOrDefault(x => x.AppUserId == ticket.AssigneeId);
 
-            if(submitter?.AppUser?.UserName == currentUserName){
+            if(submitter?.AppUser?.UserName == currentUserName || assignee?.AppUser?.UserName == currentUserName){
                 context.Succeed(requirement);
             }
 

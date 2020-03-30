@@ -236,25 +236,34 @@ namespace Persistence
                     {
                         Title = "Software A Bug 1",
                         Description = "Glitches in UI",
-                        Category = "Software A"
+                        Category = "Software A",
+                        SubmissionDate = DateTime.Now.AddMonths(-1),
+                        SubmitterId = "b"
+
                     },
                     new Ticket
                     {
                         Title = "Software B Bug 1",
                         Description = "Bug during initialization.",
-                        Category = "Software B"
+                        Category = "Software B",
+                        SubmissionDate = DateTime.Now.AddMonths(-2),
+                        SubmitterId = "b"
                     },
                     new Ticket
                     {
                         Title = "Software A Bug 2",
                         Description = "Freezing up at times.",
-                        Category = "Software A"
+                        Category = "Software A",
+                        SubmissionDate = DateTime.Now.AddMonths(-3),
+                        SubmitterId = "a"
                     },
                     new Ticket
                     {
                         Title = "Software B Bug 2",
                         Description = "Slow to respond with many tasks.",
-                        Category = "Software B"
+                        Category = "Software B",
+                        SubmissionDate = DateTime.Now.AddMonths(-4),
+                        SubmitterId = "a"
                     }
                 };
 

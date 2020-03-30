@@ -13,6 +13,7 @@ import { ticketCategory } from '../../../app/common/options/ticketCategoryOption
 import DateInput from '../../../app/common/form/DateInput';
 import { combineTicketDateAndTime } from '../../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 
 const validate = combineValidators({
@@ -35,6 +36,7 @@ interface DetailParams {
 const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
 
     const rootStore = useContext(RootStoreContext);
+
     const {
         createTicket,
         editTicket,
@@ -43,7 +45,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
     } = rootStore.ticketStore;
 
     const [ticket, setTicket] = useState(new TicketFormValues());
-    const [loading, setLoading] = useState(false);   //local state for the loading
+    const [loadingLocal, setLoading] = useState(false);   //local state for the loading
 
     useEffect(() => {
         if (match.params.id) {
@@ -55,11 +57,30 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
     }, [loadTicket, match.params.id]);
 
 
+    const {
+        user,
+        getUser,
+        loading
+    } = rootStore.userStore;
+
+    useEffect(() => {
+        getUser();
+    }, [getUser])
+
+    if(loading) return <LoadingComponent content = "loading..." />;
+
+    if(!user){
+        return <h2>Unable to get user info</h2>
+    }
+
+    //console.log(user.id)
+
     const handleFinalFormSubmit = (values: any) => {
         const dateAndTime = combineTicketDateAndTime(values.submissionDate, values.time);
         const{submissionDate, time, ...ticket} = values;
         ticket.submissionDate = dateAndTime;
         if (!ticket.id){
+            ticket.submitterId = user.id;
             let newTicket = {
                 ...ticket,
                 id: uuid()    //this creates a guid for our new ticket
@@ -80,7 +101,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
                     initialValues = {ticket}
                     onSubmit = {handleFinalFormSubmit}
                     render = {({handleSubmit, invalid, pristine}) => (
-                        <Form onSubmit = {handleSubmit} loading = {loading}>
+                        <Form onSubmit = {handleSubmit} loading = {loadingLocal}>
                             <Field
                                 name='title'
                                 placeholder = "Title"
@@ -118,7 +139,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
                             </Form.Group>
                             <Button 
                             loading={submitting}
-                            disabled = {loading || invalid || pristine}
+                            disabled = {loadingLocal || invalid || pristine}
                              floated='right'
                              positive 
                              type = 'submit' 
@@ -126,7 +147,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
                              />
                             <Button 
                             onClick={ticket.id ? () => history.push(`/tickets/${ticket.id}`) : () => history.push('/tickets')}
-                            disabled = {loading}
+                            disabled = {loadingLocal}
                             floated='right' 
                             type = 'button' 
                             content = "Cancel" 

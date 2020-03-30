@@ -131,6 +131,46 @@ export default class TicketStore {
         }
     }
 
+    @action assignTicket = async (ticket: ITicket) => {
+        this.loadingInitial = true;
+        try{
+            await agent.Tickets.assign(ticket);
+            runInAction('assigning ticket', () => {
+                this.ticketRegistry.set(ticket.id, ticket);
+                this.ticket = ticket;
+                this.loadingInitial = false;
+            })
+            history.push('/tickets/');
+            //history.push(`/tickets/${ticket.id}`);
+        } catch(error) {
+            runInAction('assign ticket error', () => {
+                this.loadingInitial = false;
+            })
+            toast.error("Problem submitting data");
+            console.log(error.response);
+        }
+    }
+
+    @action removeTicket = async (ticket: ITicket) => {
+        this.loadingInitial = true;
+        try{
+            await agent.Tickets.remove(ticket);
+            runInAction('dropping ticket', () => {
+                this.ticketRegistry.set(ticket.id, ticket);
+                this.ticket = ticket;
+                this.loadingInitial = false;
+            })
+            history.push('/tickets/');
+            //history.push(`/tickets/${ticket.id}`);
+        } catch(error) {
+            runInAction('dropping ticket error', () => {
+                this.loadingInitial = false;
+            })
+            toast.error("Problem submitting data");
+            console.log(error.response);
+        }
+    }
+
     @action deleteTicket = async (event: SyntheticEvent<HTMLButtonElement>, id:string) => {
         this.submitting = true;
         this.target = event.currentTarget.name;
