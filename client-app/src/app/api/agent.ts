@@ -117,6 +117,8 @@ const Tickets = {
     details: (id: string) => requests.get(`/tickets/${id}`),
     create: (ticket: ITicket) => requests.post('/tickets', ticket),
     update: (ticket: ITicket) => requests.put(`/tickets/${ticket.id}`, ticket),
+    assign: (ticket: ITicket) => requests.put(`/tickets/${ticket.id}/assign`, ticket),
+    remove: (ticket: ITicket) => requests.put(`/tickets/${ticket.id}/remove`, ticket),
     delete: (id: string) => requests.del(`/tickets/${id}`)
 }
 

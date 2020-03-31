@@ -2,6 +2,7 @@ import React from 'react'
 import { Segment, Grid, Icon } from 'semantic-ui-react';
 import { ITicket } from '../../../app/models/ticket';
 import { format } from 'date-fns';
+import { observer } from 'mobx-react-lite';
 
 const TicketDetailedInfo: React.FC<{ticket: ITicket}> = ({ticket}) => {
     return (
@@ -43,4 +44,4 @@ const TicketDetailedInfo: React.FC<{ticket: ITicket}> = ({ticket}) => {
     )
 }
 
-export default TicketDetailedInfo;
+export default observer(TicketDetailedInfo);

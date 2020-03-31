@@ -10,6 +10,20 @@ export interface ITicket {  //This is the strucure of our Ticket object at the m
     description: string;
     category: string;
     submissionDate: Date;
+    submitterId: string;
+    submitterUsername: string;
+    assigneeId: string | null;
+    assigneeUsername: string | null;
+    comments: IComment[];
+}
+
+export interface IComment{
+    id: string;
+    createdAt: Date;
+    body: string;
+    username: string;
+    displayName: string;
+    image: string;
 }
 
 
@@ -24,6 +38,7 @@ export class TicketFormValues implements ITicketFormValues {
     description: string = "";
     category: string = "";
     submissionDate?: Date = undefined;
+    submitterId: string = "";
     time?: Date = undefined;
 
     constructor(init?: ITicketFormValues) {

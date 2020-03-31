@@ -6,6 +6,7 @@ import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { Grid } from 'semantic-ui-react';
 import TicketDetailedHeader from './TicketDetailedHeader';
 import TicketDetailedInfo from './TicketDetailedInfo';
+import TicketComments from './TicketComments';
 
 
 interface DetailParams {
@@ -38,6 +39,7 @@ const TicketDetails: React.FC<RouteComponentProps<DetailParams>> = ({match, hist
         <Grid.Column width = {14}>
           <TicketDetailedHeader ticket={ticket}/>
           <TicketDetailedInfo ticket = {ticket}/>
+          <TicketComments />
         </Grid.Column>
       </Grid>
     )

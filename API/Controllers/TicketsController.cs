@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Application.Tickets;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -24,13 +25,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Ticket>>> List ()       //We will be returning a list of tickets
+        public async Task<ActionResult<List<TicketDTO>>> List ()       //We will be returning a list of tickets
         {
             return await _mediator.Send(new List.Query());          //Sending a message to the List Query Handler
         }
 
         [HttpGet("{id}")]    //Get a particular ticket --> pass in id as a root parameter
-        public async Task<ActionResult<Ticket>> Details(Guid id)
+        public async Task<ActionResult<TicketDTO>> Details(Guid id)
         {
             return await _mediator.Send(new Details.Query{Id = id});      //take id from root paramter and see if it matches any of the guids of the tickets in the DB
         }
@@ -42,6 +43,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]       //Edit a particular ticket --> pass in id as root parameter
+        [Authorize(Policy = "IsSubmitter")]
         public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
         {
             command.Id = id;
@@ -49,9 +51,24 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "IsSubmitter")]
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
             return await _mediator.Send(new Delete.Command{Id = id});
+        }
+
+        [HttpPut("{id}/assign")]
+        public async Task<ActionResult<Unit>> Assign(Guid id, Assign.Command command)
+        {
+            command.Id = id;
+            return await _mediator.Send(command);
+        }
+
+        [HttpPut("{id}/remove")]
+        public async Task<ActionResult<Unit>> Remove(Guid id, Remove.Command command)
+        {
+            command.Id = id;
+            return await _mediator.Send(command);
         }
 
     }

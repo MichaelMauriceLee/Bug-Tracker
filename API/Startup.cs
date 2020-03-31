@@ -97,8 +97,14 @@ namespace API
                 {
                     policy.Requirements.Add(new IsManagerRequirement());
                 });
+
+                opt.AddPolicy("IsSubmitter", policy =>
+                {
+                    policy.Requirements.Add(new IsSubmitterRequirement());
+                });
             });
             services.AddTransient<IAuthorizationHandler, IsManagerRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, IsSubmitterRequirementHandler>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

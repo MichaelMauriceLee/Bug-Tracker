@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Segment, Item, Header, Button, Image } from 'semantic-ui-react';
 import { ITicket } from '../../../app/models/ticket';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { RootStoreContext } from '../../../app/stores/rootStore';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 const ticketImageStyle = {
   filter: 'brightness(30%)',
@@ -21,7 +23,51 @@ const ticketImageTextStyle = {
 };
 
 
+
 const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
+
+    const rootStore = useContext(RootStoreContext);
+      const {
+          user,
+          getUser,
+          loading
+    } = rootStore.userStore;
+    
+    useEffect(() => {
+      getUser();
+    }, [getUser])
+    
+    if(loading) return <LoadingComponent content = "loading..." />;
+    
+    if(!user){
+      return <h2>Unable to get user info</h2>
+    }
+
+
+  const { 
+      assignTicket,
+      removeTicket,
+  } = rootStore.ticketStore;
+
+
+  var assignOrDropButton;
+
+    if(ticket.assigneeUsername)
+        assignOrDropButton = "Drop Ticket";
+    else
+        assignOrDropButton = "Pickup Ticket";
+
+
+    const handleAssignOrDrop = () => {
+      if (ticket.assigneeUsername){
+        removeTicket(ticket);
+        assignOrDropButton = "Drop Ticket";
+      }else {
+        assignTicket(ticket);
+        assignOrDropButton = "Pickup Ticket";
+      }
+  }
+
     return (
             <Segment.Group>
               <Segment basic attached='top' style={{ padding: '0' }}>
@@ -37,7 +83,8 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
                         />
                         <p>{format(ticket.submissionDate, 'eeee do MMMM')}</p>
                         <p>
-                          Submitted by <strong>Bob</strong>
+                          Submitted by <strong>{ticket.submitterUsername && ticket.submitterUsername.charAt(0).toUpperCase() +
+                         ticket.submitterUsername.slice(1)}</strong>
                         </p>
                       </Item.Content>
                     </Item>
@@ -45,10 +92,20 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
                 </Segment>
               </Segment>
               <Segment clearing attached='bottom'>
-                <Button color='teal'>Assign Ticket</Button>
+
+                {ticket.assigneeUsername ? (ticket.assigneeUsername === user.username && 
+                  <Button 
+                      onClick = {handleAssignOrDrop} 
+                      color='teal'>{assignOrDropButton}</Button>) : 
+                  <Button 
+                      onClick = {handleAssignOrDrop} 
+                      color='teal'>{assignOrDropButton}</Button>}
+                
+                {(ticket.submitterUsername === user.username || ticket.assigneeUsername === user.username) && 
                 <Button as={Link} to={`/manageTicket/${ticket.id}`} color='orange' floated='right'>
                   Manage Ticket
-                </Button>
+                </Button>}
+
               </Segment>
             </Segment.Group>
     )
