@@ -5,6 +5,7 @@ import { ITicket } from '../models/ticket'
 import agent from "../api/agent";
 import { history } from "../..";
 import { toast } from "react-toastify";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 configure({enforceActions: "always"});
 
@@ -22,6 +23,56 @@ export default class TicketStore {
     @observable loadingInitial = false;
     @observable submitting = false;
     @observable target = '';
+    @observable.ref hubConnection: HubConnection | null = null;
+
+    @action createHubConnection = (ticketId: string) => {
+        this.hubConnection = new HubConnectionBuilder()
+            .withUrl('http://localhost:5000/chat', {
+                accessTokenFactory: () => this.rootStore.commonStore.token!
+            })
+            .configureLogging(LogLevel.Information)
+            .build();
+
+        this.hubConnection
+        .start()
+        .then(() => console.log(this.hubConnection!.state))
+        .then(() => {
+            console.log('Attempting to join group');
+            if(this.hubConnection!.state === 'Connected'){
+            this.hubConnection!.invoke('AddToGroup', ticketId)
+            }
+        })
+        .catch(
+            error => console.log('Error establishing connection: ', error));
+        
+        this.hubConnection.on('ReceiveComment', comment => {
+            runInAction(() =>{
+                this.ticket!.comments.push(comment);
+            })
+        })
+
+        // this.hubConnection.on('Send', message => {
+        //     toast.info(message);
+        // })
+    };
+
+    @action stopHubConnection = () => {
+        this.hubConnection!.invoke('RemoveFromGroup', this.ticket!.id)
+            .then(() => {
+                this.hubConnection!.stop()
+            })
+            .then(() => console.log('Connection stopped'))
+            .catch(err => console.log(err))
+    }
+
+    @action addComment = async (values: any) => {
+        values.ticketId = this.ticket!.id;
+        try{
+            await this.hubConnection!.invoke("SendComment", values)
+        }catch(error){
+            console.log(error)
+        }
+    }
 
     @computed get ticketsByDate() {
         return this.groupTicketsByCategory(Array.from(this.ticketRegistry.values()))
@@ -98,6 +149,7 @@ export default class TicketStore {
 
         try{
             await agent.Tickets.create(ticket);
+            ticket.comments = [];
             runInAction('creating ticket', () => {
                 this.ticketRegistry.set(ticket.id, ticket);
                 this.submitting = false;
@@ -146,7 +198,7 @@ export default class TicketStore {
             runInAction('assign ticket error', () => {
                 this.loadingInitial = false;
             })
-            toast.error("Problem submitting data");
+            toast.error("Problem assigning the ticket");
             console.log(error.response);
         }
     }
@@ -166,7 +218,7 @@ export default class TicketStore {
             runInAction('dropping ticket error', () => {
                 this.loadingInitial = false;
             })
-            toast.error("Problem submitting data");
+            toast.error("Problem dropping the ticket");
             console.log(error.response);
         }
     }

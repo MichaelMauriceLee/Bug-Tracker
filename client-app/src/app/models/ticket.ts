@@ -14,6 +14,16 @@ export interface ITicket {  //This is the strucure of our Ticket object at the m
     submitterUsername: string;
     assigneeId: string | null;
     assigneeUsername: string | null;
+    comments: IComment[];
+}
+
+export interface IComment{
+    id: string;
+    createdAt: Date;
+    body: string;
+    username: string;
+    displayName: string;
+    image: string;
 }
 
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Application.Comments;
 using Domain;
 
 namespace Application.Tickets
@@ -22,6 +23,6 @@ namespace Application.Tickets
         public string AssigneeId { get; set; }
         public string assigneeUsername { get; set; }   //changed to fix inf loop
         public string assigneeDisplayName { get; set; }    //changed to fix inf loop
-        public virtual ICollection<Comment> Comments { get; set; }
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }
