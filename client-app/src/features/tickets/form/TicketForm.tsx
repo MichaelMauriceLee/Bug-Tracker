@@ -66,8 +66,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
             ).finally(()=> setLoading(false));
         }
     }, [loadTicket, match.params.id]);
-
-
+    
     const {
         user,
         getUser,

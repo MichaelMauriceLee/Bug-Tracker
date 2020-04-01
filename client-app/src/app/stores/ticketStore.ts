@@ -223,20 +223,17 @@ export default class TicketStore {
         }
     }
 
-    @action deleteTicket = async (event: SyntheticEvent<HTMLButtonElement>, id:string) => {
+    @action deleteTicket = async (id:string) => {
         this.submitting = true;
-        this.target = event.currentTarget.name;
         try{
             await agent.Tickets.delete(id);
             runInAction('deleting ticket', () => {
                 this.ticketRegistry.delete(id);
                 this.submitting = false;
-                this.target = '';
             });
         } catch(error) {
             runInAction('delete ticket error', () => {
                 this.submitting = false;
-                this.target = '';
             });
             console.log(error);
         }

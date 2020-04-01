@@ -16,8 +16,7 @@ namespace Application.Tickets
                 .ForMember(d => d.Image, o => o.MapFrom(s => s.Submitter.Photos.FirstOrDefault(x => x.IsMain).Url))
                 .ForMember(d => d.AssigneeId, o => o.MapFrom(s => s.Assignee.Id))
                 .ForMember(d => d.assigneeUsername, o => o.MapFrom(s => s.Assignee.UserName))
-                .ForMember(d => d.assigneeDisplayName, o => o.MapFrom(s => s.Assignee.DisplayName))
-                .ForMember(d => d.TeamName, o => o.MapFrom(s => s.Team.Name));
+                .ForMember(d => d.assigneeDisplayName, o => o.MapFrom(s => s.Assignee.DisplayName));
 
         }
     }

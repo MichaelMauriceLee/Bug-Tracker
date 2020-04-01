@@ -16,6 +16,19 @@ export interface ITeam {
     isTeamMem: boolean;
 }
 
+export class TheTeam implements ITeam{
+    id: string = ""
+    name: string = ""
+    description: string = ""
+    members: IMember[] = [];
+    isManager: boolean = true;
+    isTeamMem: boolean = true;
+
+    constructor(init?: ITeam){
+        Object.assign(this, init);
+    }
+}
+
 export interface ITeamFormValues {
     id?: string;
     name: string;

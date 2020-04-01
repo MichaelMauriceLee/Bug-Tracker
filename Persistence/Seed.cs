@@ -238,8 +238,8 @@ namespace Persistence
                         Description = "Glitches in UI",
                         Category = "Software A",
                         SubmissionDate = DateTime.Now.AddMonths(-1),
-                        SubmitterId = "b"
-
+                        SubmitterId = "b",
+                        TeamId = context.Teams.FirstOrDefault().Id.ToString()
                     },
                     new Ticket
                     {
@@ -247,7 +247,8 @@ namespace Persistence
                         Description = "Bug during initialization.",
                         Category = "Software B",
                         SubmissionDate = DateTime.Now.AddMonths(-2),
-                        SubmitterId = "b"
+                        SubmitterId = "b",
+                        TeamId = context.Teams.FirstOrDefault().Id.ToString()
                     },
                     new Ticket
                     {
@@ -255,7 +256,8 @@ namespace Persistence
                         Description = "Freezing up at times.",
                         Category = "Software A",
                         SubmissionDate = DateTime.Now.AddMonths(-3),
-                        SubmitterId = "a"
+                        SubmitterId = "a",
+                        TeamId = context.Teams.FirstOrDefault().Id.ToString()
                     },
                     new Ticket
                     {
@@ -263,7 +265,8 @@ namespace Persistence
                         Description = "Slow to respond with many tasks.",
                         Category = "Software B",
                         SubmissionDate = DateTime.Now.AddMonths(-4),
-                        SubmitterId = "a"
+                        SubmitterId = "a",
+                        TeamId = context.Teams.FirstOrDefault().Id.ToString()
                     }
                 };
 
