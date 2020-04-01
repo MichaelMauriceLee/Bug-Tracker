@@ -14,8 +14,6 @@ import DateInput from '../../../app/common/form/DateInput';
 import { combineTicketDateAndTime } from '../../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { ticketTeam } from '../../../app/common/options/teamOptions';
-
 
 const validate = combineValidators({
     title: isRequired({message: "The Ticket Title is required"}),
@@ -33,21 +31,21 @@ interface DetailParams {
     id: string
 }
 
-
 const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
 
     const rootStore = useContext(RootStoreContext);
 
+    //LOAD TEAM ITEMS
     const { teams, loadTeams } = rootStore.teamStore;
-
     useEffect(() => {
         loadTeams();
     }, [loadTeams]);
 
-    const teamNameOptions = teams.map((team) => (              //array of options for the team selectInput button
+    const teamNameOptions = teams.map((team) => (         //array of options for the team selectInput button
         {key: team.name, text: team.name, value: team.id}    
     ))
 
+    //LOAD TICKET ITEMS
     const {
         createTicket,
         editTicket,
@@ -67,6 +65,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
         }
     }, [loadTicket, match.params.id]);
     
+    //LOAD USER ITEMS
     const {
         user,
         getUser,
@@ -84,7 +83,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
     }
 
  
-
+    //Method for editing or creating a ticket
     const handleFinalFormSubmit = (values: any) => {
         const dateAndTime = combineTicketDateAndTime(values.submissionDate, values.time);
         const{submissionDate, time, ...ticket} = values;

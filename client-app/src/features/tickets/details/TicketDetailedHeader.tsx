@@ -29,9 +29,8 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
 
     const rootStore = useContext(RootStoreContext);
 
+    //TEAM STORE ITEMS
     const {loadTeam, loadingInitial} = rootStore.teamStore;
-
-  //See Ticket form and try to create a new local team so we can avoid the if statements for null below
     const [team, setTeam] = useState(new TheTeam());
     const [loadingLocal, setLoading] = useState(false);   //local state for the loading
 
@@ -45,12 +44,7 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
         
     }, [loadTeam, ticket.teamId]);
 
-    //if (loadingInitial) return <LoadingComponent content='Loading team...'/>;
-
-    //if (!team) return <h2>Team not found</h2>;
-    // console.log(team.name)
-
-    
+    //USER STORE ITEMS
       const {
           user,
           getUser,
@@ -67,6 +61,7 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
       return <h2>Unable to get user info</h2>
     }
 
+    //VALIDATION LOGIC FOR MANAGER & TEAM MEMBERS
     var managerUserName;
     var isOnTeam = false;
     const manager = team.members.filter(x => x.isManager)[0];
@@ -78,14 +73,16 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
       managerUserName = manager.username;
     }
 
-  const { 
-      assignTicket,
-      removeTicket,
-      deleteTicket
-  } = rootStore.ticketStore;
+    //TICKET STORE ITEMS
+    const { 
+        assignTicket,
+        removeTicket,
+        deleteTicket,
+        submitting
+    } = rootStore.ticketStore;
 
 
-  var assignOrDropButton;
+    var assignOrDropButton;
 
     if(ticket.assigneeUsername)
         assignOrDropButton = "Drop Ticket";
@@ -144,7 +141,7 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
                       color='teal'>{assignOrDropButton}</Button>)}
 
                 {managerUserName === user.username && 
-                <Button as={Link} to={"/tickets"} onClick={()=>deleteTicket(ticket.id)} color='red' floated='right'>
+                <Button loading = {submitting} onClick={()=>deleteTicket(ticket.id)} color='red' floated='right'>
                   Delete Ticket
                 </Button>}
 

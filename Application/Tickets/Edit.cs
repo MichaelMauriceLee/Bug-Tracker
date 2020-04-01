@@ -73,6 +73,7 @@ namespace Application.Tickets
                 ticket.SubmitterId = request.SubmitterId ?? ticket.SubmitterId;
                 ticket.AssigneeId = request.AssigneeId ?? ticket.AssigneeId;
                 ticket.TeamId = request.TeamId ?? ticket.TeamId;
+                ticket.Comments = request.Comments ?? ticket.Comments;
 
                 var success = await _context.SaveChangesAsync() > 0;     //if we get > 0, this means that our addition of the new ticket was successful
 

@@ -51,9 +51,6 @@ export default class TicketStore {
             })
         })
 
-        // this.hubConnection.on('Send', message => {
-        //     toast.info(message);
-        // })
     };
 
     @action stopHubConnection = () => {
@@ -230,10 +227,13 @@ export default class TicketStore {
             runInAction('deleting ticket', () => {
                 this.ticketRegistry.delete(id);
                 this.submitting = false;
+                this.target = '';
             });
+            history.push('/tickets/');
         } catch(error) {
             runInAction('delete ticket error', () => {
                 this.submitting = false;
+                this.target = '';
             });
             console.log(error);
         }

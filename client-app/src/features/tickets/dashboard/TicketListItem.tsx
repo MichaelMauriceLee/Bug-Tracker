@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import { ITicket } from '../../../app/models/ticket';
 import { Item, Button, Segment, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { RootStoreContext } from '../../../app/stores/rootStore';
-import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { TheTeam } from '../../../app/models/team';
-
-
 
 const TicketListItem: React.FC<{ticket: ITicket}> = ({ ticket }) => {
     return (
