@@ -5,6 +5,7 @@ import { Grid, Button } from "semantic-ui-react";
 import { observer } from "mobx-react-lite";
 import TicketList from "./TicketList";
 import { Link } from "react-router-dom";
+import TicketFilters from "./TicketFilters";
 
 /*
  * TODO
@@ -29,7 +30,7 @@ const TicketDashboard = () => {
                 <TicketList />
             </Grid.Column>
             <Grid.Column width = {4}>
-                <h2>Ticket Filters</h2> 
+                <TicketFilters />
                 <Button
                     as = {Link} to="/createTicket"
                     positive 

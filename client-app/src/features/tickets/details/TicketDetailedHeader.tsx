@@ -81,22 +81,12 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
         submitting
     } = rootStore.ticketStore;
 
-
-    var assignOrDropButton;
-
-    if(ticket.assigneeUsername)
-        assignOrDropButton = "Drop Ticket";
-    else
-        assignOrDropButton = "Pickup Ticket";
-
-
+    //LOGIC FOR ASSIGNING OR DROPPING TICKET
     const handleAssignOrDrop = () => {
       if (ticket.assigneeUsername){
         removeTicket(ticket);
-        assignOrDropButton = "Drop Ticket";
       }else {
         assignTicket(ticket);
-        assignOrDropButton = "Pickup Ticket";
       }
   }
 
@@ -134,14 +124,21 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
 
                 {ticket.assigneeUsername ? ((ticket.assigneeUsername === user.username || user.username === managerUserName) &&
                   <Button 
+                      loading = {submitting}
                       onClick = {handleAssignOrDrop} 
-                      color='teal'>{assignOrDropButton}</Button>) : (isOnTeam &&
-                  <Button 
+                      color='teal'>Drop Ticket</Button>) : (isOnTeam &&
+                  <Button
+                      loading = {submitting}
                       onClick = {handleAssignOrDrop} 
-                      color='teal'>{assignOrDropButton}</Button>)}
+                      color='teal'>Pickup Ticket</Button>)}
 
                 {managerUserName === user.username && 
-                <Button loading = {submitting} onClick={()=>deleteTicket(ticket.id)} color='red' floated='right'>
+                <Button 
+                    loading = {submitting} 
+                    onClick={()=>deleteTicket(ticket.id)} 
+                    color='red' 
+                    floated='right'
+                >
                   Delete Ticket
                 </Button>}
 

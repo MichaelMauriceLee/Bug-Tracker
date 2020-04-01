@@ -25,9 +25,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TicketDTO>>> List ()       //We will be returning a list of tickets
+        public async Task<ActionResult<List.TicketsEnvelope>> List (bool IsSubmitter, bool IsAssignee)       //We will be returning a list of tickets
         {
-            return await _mediator.Send(new List.Query());          //Sending a message to the List Query Handler
+            return await _mediator.Send(new List.Query(IsSubmitter, IsAssignee));          //Sending a message to the List Query Handler
         }
 
         [HttpGet("{id}")]    //Get a particular ticket --> pass in id as a root parameter
