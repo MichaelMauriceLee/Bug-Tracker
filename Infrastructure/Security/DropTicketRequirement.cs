@@ -8,15 +8,15 @@ using Persistence;
 
 namespace Infrastructure.Security
 {
-    public class IsSubmitterRequirement : IAuthorizationRequirement
+    public class DropTicketRequirement : IAuthorizationRequirement
     {
     }
 
-    public class IsSubmitterRequirementHandler : AuthorizationHandler<IsSubmitterRequirement>
+    public class DropTicketRequirementHandler : AuthorizationHandler<DropTicketRequirement>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly DataContext _context;
-        public IsSubmitterRequirementHandler(IHttpContextAccessor httpContextAccessor, DataContext context)
+        public DropTicketRequirementHandler(IHttpContextAccessor httpContextAccessor, DataContext context)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
@@ -24,7 +24,7 @@ namespace Infrastructure.Security
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-        IsSubmitterRequirement requirement)
+        DropTicketRequirement requirement)
         {
             var currentUserName = _httpContextAccessor.HttpContext.User?.Claims?
             .SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -33,14 +33,16 @@ namespace Infrastructure.Security
             .SingleOrDefault(x => x.Key == "id").Value.ToString());
 
             var ticket = _context.Tickets.FindAsync(ticketId).Result;
+
             var team = _context.Teams.FindAsync(Guid.Parse(ticket.TeamId)).Result;   //can change ticket.TeamId to team name
-            
+
+            var user = _context.Users.SingleOrDefault(x => x.UserName == currentUserName);
+
             var manager = team.TeamMembers.FirstOrDefault(x => x.IsManager);
-            var submitter = _context.TeamMembers.FirstOrDefault(x => x.AppUserId == ticket.SubmitterId);
+
             var assignee = _context.TeamMembers.FirstOrDefault(x => x.AppUserId == ticket.AssigneeId);
 
-            if(submitter?.AppUser?.UserName == currentUserName || assignee?.AppUser?.UserName == currentUserName
-            ||manager?.AppUser?.UserName == currentUserName){
+            if(manager?.AppUser?.UserName == currentUserName || assignee?.AppUser?.UserName == currentUserName){
                 context.Succeed(requirement);
             }
 
@@ -48,6 +50,4 @@ namespace Infrastructure.Security
             
         }
     }
-
-
 }

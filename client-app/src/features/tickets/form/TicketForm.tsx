@@ -14,6 +14,7 @@ import DateInput from '../../../app/common/form/DateInput';
 import { combineTicketDateAndTime } from '../../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { ticketTeam } from '../../../app/common/options/teamOptions';
 
 
 const validate = combineValidators({
@@ -36,6 +37,16 @@ interface DetailParams {
 const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
 
     const rootStore = useContext(RootStoreContext);
+
+    const { teams, loadTeams } = rootStore.teamStore;
+
+    useEffect(() => {
+        loadTeams();
+    }, [loadTeams]);
+
+    const teamNameOptions = teams.map((team) => (              //array of options for the team selectInput button
+        {key: team.name, text: team.name, value: team.id}    
+    ))
 
     const {
         createTicket,
@@ -73,7 +84,7 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
         return <h2>Unable to get user info</h2>
     }
 
-    //console.log(user.id)
+ 
 
     const handleFinalFormSubmit = (values: any) => {
         const dateAndTime = combineTicketDateAndTime(values.submissionDate, values.time);
@@ -120,6 +131,13 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
                                 name='category' 
                                 placeholder = "Category" 
                                 value = {ticket.category}
+                            />
+                            <Field
+                                component = {SelectInput}
+                                options = {teamNameOptions}
+                                name='teamId' 
+                                placeholder = "Team Name" 
+                                value = {ticket.teamId}
                             />
                             <Form.Group widths = 'equal'>
                             <Field

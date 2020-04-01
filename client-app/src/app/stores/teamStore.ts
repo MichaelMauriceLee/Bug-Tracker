@@ -70,6 +70,10 @@ export default class TeamStore {
             Array.from(this.teamRegistry.values())
         );
     }
+
+    @computed get teams(){
+        return Array.from(this.teamRegistry.values());
+    }
     
     // sort the array by name, and create a dictionary of <name, team>
     groupTeamsByName(teams: ITeam[]) {

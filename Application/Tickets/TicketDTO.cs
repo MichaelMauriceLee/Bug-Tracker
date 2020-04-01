@@ -19,6 +19,9 @@ namespace Application.Tickets
         public string SubmitterId { get; set; }
         public string submitterUsername { get; set; }   //changed to fix inf loop
         public string submitterDisplayName { get; set; }     //changed to fix inf loop
+        public string TeamId { get; set; }
+
+        public string TeamName {get; set;}
         public string Image { get; set; }     //changed to fix inf loop
         public string AssigneeId { get; set; }
         public string assigneeUsername { get; set; }   //changed to fix inf loop

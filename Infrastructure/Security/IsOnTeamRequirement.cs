@@ -4,19 +4,20 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Infrastructure.Security
 {
-    public class IsSubmitterRequirement : IAuthorizationRequirement
+    public class IsOnTeamRequirement : IAuthorizationRequirement
     {
     }
 
-    public class IsSubmitterRequirementHandler : AuthorizationHandler<IsSubmitterRequirement>
+    public class IsOnTeamRequirementHandler : AuthorizationHandler<IsOnTeamRequirement>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly DataContext _context;
-        public IsSubmitterRequirementHandler(IHttpContextAccessor httpContextAccessor, DataContext context)
+        public IsOnTeamRequirementHandler(IHttpContextAccessor httpContextAccessor, DataContext context)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
@@ -24,7 +25,7 @@ namespace Infrastructure.Security
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-        IsSubmitterRequirement requirement)
+        IsOnTeamRequirement requirement)
         {
             var currentUserName = _httpContextAccessor.HttpContext.User?.Claims?
             .SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -33,14 +34,14 @@ namespace Infrastructure.Security
             .SingleOrDefault(x => x.Key == "id").Value.ToString());
 
             var ticket = _context.Tickets.FindAsync(ticketId).Result;
-            var team = _context.Teams.FindAsync(Guid.Parse(ticket.TeamId)).Result;   //can change ticket.TeamId to team name
-            
-            var manager = team.TeamMembers.FirstOrDefault(x => x.IsManager);
-            var submitter = _context.TeamMembers.FirstOrDefault(x => x.AppUserId == ticket.SubmitterId);
-            var assignee = _context.TeamMembers.FirstOrDefault(x => x.AppUserId == ticket.AssigneeId);
 
-            if(submitter?.AppUser?.UserName == currentUserName || assignee?.AppUser?.UserName == currentUserName
-            ||manager?.AppUser?.UserName == currentUserName){
+            var team = _context.Teams.FindAsync(Guid.Parse(ticket.TeamId)).Result;   //can change ticket.TeamId to team name
+
+            var user = _context.Users.SingleOrDefault(x => x.UserName == currentUserName);
+
+            var theUser = team.TeamMembers.FirstOrDefault(x => x.AppUserId == user.Id);
+
+            if(theUser?.AppUser?.UserName == currentUserName){
                 context.Succeed(requirement);
             }
 
@@ -48,6 +49,4 @@ namespace Infrastructure.Security
             
         }
     }
-
-
 }
