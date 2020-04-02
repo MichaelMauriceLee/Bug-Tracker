@@ -20,8 +20,6 @@ const TicketDashboard = () => {
     }, [rootStore.ticketStore])
 
     if (rootStore.ticketStore.loadingInitial) return <LoadingComponent content = 'Loading tickets...' />
-    
-
 
     return (
         <Grid>
