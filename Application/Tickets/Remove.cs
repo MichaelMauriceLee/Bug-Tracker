@@ -45,10 +45,10 @@ namespace Application.Tickets
                 {
                     throw new RestException(HttpStatusCode.BadRequest, new {Ticket = "This ticket has not been assigned yet"});
                 }
-                else if(ticket.AssigneeId != user.Id)
-                {
-                    throw new RestException(HttpStatusCode.BadRequest, new {Ticket = "You are not assigned this ticket"});
-                }
+                // else if(ticket.AssigneeId != user.Id)
+                // {
+                //     throw new RestException(HttpStatusCode.BadRequest, new {Ticket = "You are not assigned this ticket"});
+                // }
 
                 ticket.AssigneeId = null;
 

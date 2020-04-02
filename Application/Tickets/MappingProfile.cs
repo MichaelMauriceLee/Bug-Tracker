@@ -17,6 +17,7 @@ namespace Application.Tickets
                 .ForMember(d => d.AssigneeId, o => o.MapFrom(s => s.Assignee.Id))
                 .ForMember(d => d.assigneeUsername, o => o.MapFrom(s => s.Assignee.UserName))
                 .ForMember(d => d.assigneeDisplayName, o => o.MapFrom(s => s.Assignee.DisplayName));
+
         }
     }
 }

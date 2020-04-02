@@ -102,9 +102,27 @@ namespace API
                 {
                     policy.Requirements.Add(new IsSubmitterRequirement());
                 });
+
+                opt.AddPolicy("IsOnTeam", policy =>
+                {
+                    policy.Requirements.Add(new IsOnTeamRequirement());
+                });
+
+                opt.AddPolicy("DropTicketReq", policy =>
+                {
+                    policy.Requirements.Add(new DropTicketRequirement());
+                });
+
+                opt.AddPolicy("DeleteTicketReq", policy =>
+                {
+                    policy.Requirements.Add(new DeleteTicketRequirement());
+                });
             });
             services.AddTransient<IAuthorizationHandler, IsManagerRequirementHandler>();
             services.AddTransient<IAuthorizationHandler, IsSubmitterRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, IsOnTeamRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, DropTicketRequirementHandler>();
+            services.AddTransient<IAuthorizationHandler, DeleteTicketRequirementHandler>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -70,12 +70,12 @@ const TicketComments = () => {
                             placeholder = 'Add your comment'
                           />
                           <Button
+                            loading = {submitting}
                             content='Add Reply'
                             disabled = {invalid || pristine}
                             labelPosition='left'
                             icon='edit'
                             primary
-                            loading = {submitting}
                           />
                         </Form>
                       )}

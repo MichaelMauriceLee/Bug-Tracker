@@ -15,7 +15,6 @@ import { combineTicketDateAndTime } from '../../../app/common/util/util';
 import { combineValidators, isRequired, composeValidators, hasLengthGreaterThan } from 'revalidate';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 
-
 const validate = combineValidators({
     title: isRequired({message: "The Ticket Title is required"}),
     description: composeValidators(
@@ -32,11 +31,21 @@ interface DetailParams {
     id: string
 }
 
-
 const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history}) => {
 
     const rootStore = useContext(RootStoreContext);
 
+    //LOAD TEAM ITEMS
+    const { teams, loadTeams } = rootStore.teamStore;
+    useEffect(() => {
+        loadTeams();
+    }, [loadTeams]);
+
+    const teamNameOptions = teams.map((team) => (         //array of options for the team selectInput button
+        {key: team.name, text: team.name, value: team.id}    
+    ))
+
+    //LOAD TICKET ITEMS
     const {
         createTicket,
         editTicket,
@@ -55,8 +64,8 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
             ).finally(()=> setLoading(false));
         }
     }, [loadTicket, match.params.id]);
-
-
+    
+    //LOAD USER ITEMS
     const {
         user,
         getUser,
@@ -73,8 +82,8 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
         return <h2>Unable to get user info</h2>
     }
 
-    //console.log(user.id)
-
+ 
+    //Method for editing or creating a ticket
     const handleFinalFormSubmit = (values: any) => {
         const dateAndTime = combineTicketDateAndTime(values.submissionDate, values.time);
         const{submissionDate, time, ...ticket} = values;
@@ -120,6 +129,13 @@ const TicketForm: React.FC<RouteComponentProps<DetailParams>> = ({match, history
                                 name='category' 
                                 placeholder = "Category" 
                                 value = {ticket.category}
+                            />
+                            <Field
+                                component = {SelectInput}
+                                options = {teamNameOptions}
+                                name='teamId' 
+                                placeholder = "Team Name" 
+                                value = {ticket.teamId}
                             />
                             <Form.Group widths = 'equal'>
                             <Field

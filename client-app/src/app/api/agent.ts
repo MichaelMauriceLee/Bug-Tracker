@@ -4,7 +4,7 @@ import {history} from '../..';
 import {toast} from 'react-toastify';
 import {IUser, IUserFormValues} from '../models/user';
 import {IProfile, IPhoto} from '../models/profile';
-import { ITicket } from '../models/ticket';
+import { ITicket, ITicketsEnvelope } from '../models/ticket';
 
 /*
  * File that specifies REST endpoints and handles communication to the server
@@ -113,7 +113,8 @@ const Profiles = {
 };
 
 const Tickets = {
-    list: (): Promise<ITicket[]> => requests.get('/tickets'),
+    list: (params: URLSearchParams): Promise<ITicketsEnvelope> => 
+    axios.get('/tickets', {params: params}).then(responseBody),
     details: (id: string) => requests.get(`/tickets/${id}`),
     create: (ticket: ITicket) => requests.post('/tickets', ticket),
     update: (ticket: ITicket) => requests.put(`/tickets/${ticket.id}`, ticket),

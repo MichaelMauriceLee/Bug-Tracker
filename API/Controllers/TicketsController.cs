@@ -25,9 +25,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TicketDTO>>> List ()       //We will be returning a list of tickets
+        public async Task<ActionResult<List.TicketsEnvelope>> List (bool IsSubmitter, bool IsAssignee)       //We will be returning a list of tickets
         {
-            return await _mediator.Send(new List.Query());          //Sending a message to the List Query Handler
+            return await _mediator.Send(new List.Query(IsSubmitter, IsAssignee));          //Sending a message to the List Query Handler
         }
 
         [HttpGet("{id}")]    //Get a particular ticket --> pass in id as a root parameter
@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]       //Edit a particular ticket --> pass in id as root parameter
-        [Authorize(Policy = "IsSubmitter")]
+        [Authorize(Policy = "IsSubmitter")]          //Is Submitter includes assignee, submitter, and team manager
         public async Task<ActionResult<Unit>> Edit(Guid id, Edit.Command command)
         {
             command.Id = id;
@@ -51,13 +51,14 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "IsSubmitter")]
+        [Authorize(Policy = "DeleteTicketReq")]        //Only a team manager can delete a ticket 
         public async Task<ActionResult<Unit>> Delete(Guid id)
         {
             return await _mediator.Send(new Delete.Command{Id = id});
         }
 
         [HttpPut("{id}/assign")]
+        [Authorize(Policy = "IsOnTeam")]      //Requirements for assigning ticket: Anyone on the team associated with that ticket
         public async Task<ActionResult<Unit>> Assign(Guid id, Assign.Command command)
         {
             command.Id = id;
@@ -65,6 +66,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}/remove")]
+        [Authorize(Policy = "DropTicketReq")]     //Requirements for dropping ticket: Either the manager OR assignee
         public async Task<ActionResult<Unit>> Remove(Guid id, Remove.Command command)
         {
             command.Id = id;

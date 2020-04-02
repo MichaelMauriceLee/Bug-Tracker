@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
+import { TheTeam } from '../../../app/models/team';
 
 const ticketImageStyle = {
   filter: 'brightness(30%)',
@@ -27,6 +28,23 @@ const ticketImageTextStyle = {
 const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
 
     const rootStore = useContext(RootStoreContext);
+
+    //TEAM STORE ITEMS
+    const {loadTeam, loadingInitial} = rootStore.teamStore;
+    const [team, setTeam] = useState(new TheTeam());
+    const [loadingLocal, setLoading] = useState(false);   //local state for the loading
+
+    useEffect(() => {
+        if(ticket.teamId){
+          setLoading(true);
+          loadTeam(ticket.teamId).then(
+            (team) => setTeam(new TheTeam(team))
+          ).finally(() => setLoading(false));
+        }
+        
+    }, [loadTeam, ticket.teamId]);
+
+    //USER STORE ITEMS
       const {
           user,
           getUser,
@@ -43,28 +61,32 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
       return <h2>Unable to get user info</h2>
     }
 
+    //VALIDATION LOGIC FOR MANAGER & TEAM MEMBERS
+    var managerUserName;
+    var isOnTeam = false;
+    const manager = team.members.filter(x => x.isManager)[0];
+    const teamMember = team.members.filter(x => x.username === user.username)[0];
+    if(teamMember!=undefined){
+      isOnTeam = true;
+    }
+    if(manager != undefined){
+      managerUserName = manager.username;
+    }
 
-  const { 
-      assignTicket,
-      removeTicket,
-  } = rootStore.ticketStore;
+    //TICKET STORE ITEMS
+    const { 
+        assignTicket,
+        removeTicket,
+        deleteTicket,
+        submitting
+    } = rootStore.ticketStore;
 
-
-  var assignOrDropButton;
-
-    if(ticket.assigneeUsername)
-        assignOrDropButton = "Drop Ticket";
-    else
-        assignOrDropButton = "Pickup Ticket";
-
-
+    //LOGIC FOR ASSIGNING OR DROPPING TICKET
     const handleAssignOrDrop = () => {
       if (ticket.assigneeUsername){
         removeTicket(ticket);
-        assignOrDropButton = "Drop Ticket";
       }else {
         assignTicket(ticket);
-        assignOrDropButton = "Pickup Ticket";
       }
   }
 
@@ -86,6 +108,13 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
                           Submitted by <strong>{ticket.submitterUsername && ticket.submitterUsername.charAt(0).toUpperCase() +
                          ticket.submitterUsername.slice(1)}</strong>
                         </p>
+                        <p>
+                          Assigned to <strong>{ticket.assigneeUsername && ticket.assigneeUsername.charAt(0).toUpperCase() +
+                         ticket.assigneeUsername.slice(1)}</strong>
+                        </p>
+                        <p>
+                          Team in charge: <strong>{team && team.name}</strong>
+                        </p>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -93,17 +122,30 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
               </Segment>
               <Segment clearing attached='bottom'>
 
-                {ticket.assigneeUsername ? (ticket.assigneeUsername === user.username && 
+                {ticket.assigneeUsername ? ((ticket.assigneeUsername === user.username || user.username === managerUserName) &&
                   <Button 
+                      loading = {submitting}
                       onClick = {handleAssignOrDrop} 
-                      color='teal'>{assignOrDropButton}</Button>) : 
-                  <Button 
+                      color='teal'>Drop Ticket</Button>) : (isOnTeam &&
+                  <Button
+                      loading = {submitting}
                       onClick = {handleAssignOrDrop} 
-                      color='teal'>{assignOrDropButton}</Button>}
-                
-                {(ticket.submitterUsername === user.username || ticket.assigneeUsername === user.username) && 
+                      color='teal'>Pickup Ticket</Button>)}
+
+                {managerUserName === user.username && 
+                <Button 
+                    loading = {submitting} 
+                    onClick={()=>deleteTicket(ticket.id)} 
+                    color='red' 
+                    floated='right'
+                >
+                  Delete Ticket
+                </Button>}
+
+                {(ticket.submitterUsername === user.username || ticket.assigneeUsername === user.username 
+                || managerUserName === user.username) && 
                 <Button as={Link} to={`/manageTicket/${ticket.id}`} color='orange' floated='right'>
-                  Manage Ticket
+                  Edit Ticket Details
                 </Button>}
 
               </Segment>

@@ -4,6 +4,15 @@ TODO
 // The following is a typescript interface
 // When we want to define the structure of an object and we want to strongly type against this particular object
 //Then interfaces are the way to go (it is solely used for type checking!)
+
+export interface ITicketsEnvelope{
+    tickets: ITicket[];
+    ticketCount: number;
+}
+
+
+
+
 export interface ITicket {  //This is the strucure of our Ticket object at the moment
     id: string;
     title: string;
@@ -12,6 +21,8 @@ export interface ITicket {  //This is the strucure of our Ticket object at the m
     submissionDate: Date;
     submitterId: string;
     submitterUsername: string;
+    teamId: string;
+    teamName: string;
     assigneeId: string | null;
     assigneeUsername: string | null;
     comments: IComment[];
@@ -39,6 +50,7 @@ export class TicketFormValues implements ITicketFormValues {
     category: string = "";
     submissionDate?: Date = undefined;
     submitterId: string = "";
+    teamId: string = "";
     time?: Date = undefined;
 
     constructor(init?: ITicketFormValues) {

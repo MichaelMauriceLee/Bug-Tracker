@@ -32,6 +32,11 @@ namespace Application.Tickets
                     throw new RestException(HttpStatusCode.NotFound, new {ticket = "Not found"});
                 }
 
+                foreach (var comment in ticket.Comments)
+                {
+                    _context.Remove(comment);
+                }
+
                 _context.Remove(ticket);
 
                 var success = await _context.SaveChangesAsync() > 0;     

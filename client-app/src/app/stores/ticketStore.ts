@@ -1,5 +1,5 @@
 ﻿import {RootStore} from "./rootStore";
-import {configure, observable, runInAction, action, computed} from "mobx";
+import {configure, observable, runInAction, action, computed, reaction} from "mobx";
 import { SyntheticEvent } from "react";
 import { ITicket } from '../models/ticket'
 import agent from "../api/agent";
@@ -16,6 +16,14 @@ export default class TicketStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+
+        reaction(
+            () => this.predicate.keys(),
+            () => {
+                this.ticketRegistry.clear();
+                this.loadTickets();
+            }
+        )
     }
 
     @observable ticketRegistry = new Map();
@@ -24,6 +32,23 @@ export default class TicketStore {
     @observable submitting = false;
     @observable target = '';
     @observable.ref hubConnection: HubConnection | null = null;
+    @observable ticketCount = 0;
+    @observable predicate = new Map();
+
+    @action setPredicate = (predicate: string, value: string) =>{
+        this.predicate.clear();
+        if (predicate !== 'all'){
+            this.predicate.set(predicate, value);
+        }
+    }
+
+    @computed get axiosParams() {
+        const params = new URLSearchParams();
+        this.predicate.forEach((value, key) => {
+                params.append(key, value)
+        })
+        return params;
+    }
 
     @action createHubConnection = (ticketId: string) => {
         this.hubConnection = new HubConnectionBuilder()
@@ -51,9 +76,6 @@ export default class TicketStore {
             })
         })
 
-        // this.hubConnection.on('Send', message => {
-        //     toast.info(message);
-        // })
     };
 
     @action stopHubConnection = () => {
@@ -94,12 +116,14 @@ export default class TicketStore {
     @action loadTickets = async () => {
         this.loadingInitial = true;
         try{
-            const tickets = await agent.Tickets.list();
+            const ticketsEnvelope = await agent.Tickets.list(this.axiosParams);
+            const {tickets, ticketCount} = ticketsEnvelope;
             runInAction('loading tickets', () => {
                 tickets.forEach((ticket) => {
                     ticket.submissionDate = new Date (ticket.submissionDate);
                     this.ticketRegistry.set(ticket.id, ticket);
                 });
+                this.ticketCount = ticketCount;
                 this.loadingInitial = false;
             });
         }catch(error){
@@ -184,19 +208,19 @@ export default class TicketStore {
     }
 
     @action assignTicket = async (ticket: ITicket) => {
-        this.loadingInitial = true;
+        this.submitting = true;
         try{
             await agent.Tickets.assign(ticket);
             runInAction('assigning ticket', () => {
                 this.ticketRegistry.set(ticket.id, ticket);
                 this.ticket = ticket;
-                this.loadingInitial = false;
+                this.submitting = false;
             })
             history.push('/tickets/');
             //history.push(`/tickets/${ticket.id}`);
         } catch(error) {
             runInAction('assign ticket error', () => {
-                this.loadingInitial = false;
+                this.submitting = false;
             })
             toast.error("Problem assigning the ticket");
             console.log(error.response);
@@ -204,28 +228,27 @@ export default class TicketStore {
     }
 
     @action removeTicket = async (ticket: ITicket) => {
-        this.loadingInitial = true;
+        this.submitting = true;
         try{
             await agent.Tickets.remove(ticket);
             runInAction('dropping ticket', () => {
                 this.ticketRegistry.set(ticket.id, ticket);
                 this.ticket = ticket;
-                this.loadingInitial = false;
+                this.submitting = false;
             })
             history.push('/tickets/');
             //history.push(`/tickets/${ticket.id}`);
         } catch(error) {
             runInAction('dropping ticket error', () => {
-                this.loadingInitial = false;
+                this.submitting = false;
             })
             toast.error("Problem dropping the ticket");
             console.log(error.response);
         }
     }
 
-    @action deleteTicket = async (event: SyntheticEvent<HTMLButtonElement>, id:string) => {
+    @action deleteTicket = async (id:string) => {
         this.submitting = true;
-        this.target = event.currentTarget.name;
         try{
             await agent.Tickets.delete(id);
             runInAction('deleting ticket', () => {
@@ -233,6 +256,7 @@ export default class TicketStore {
                 this.submitting = false;
                 this.target = '';
             });
+            history.push('/tickets/');
         } catch(error) {
             runInAction('delete ticket error', () => {
                 this.submitting = false;

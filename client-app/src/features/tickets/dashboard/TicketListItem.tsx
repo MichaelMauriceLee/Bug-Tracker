@@ -4,8 +4,6 @@ import { Item, Button, Segment, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 
-
-
 const TicketListItem: React.FC<{ticket: ITicket}> = ({ ticket }) => {
     return (
         <Segment.Group>
@@ -15,9 +13,9 @@ const TicketListItem: React.FC<{ticket: ITicket}> = ({ ticket }) => {
                 <Item.Content>
                   <Item.Header as='a'>{ticket.title}</Item.Header>
                   <Item.Description>
-                        <p>Submitted by: {ticket.submitterUsername && ticket.submitterUsername.charAt(0).toUpperCase() +
+                        <p><strong>Submitted by: </strong>{ticket.submitterUsername && ticket.submitterUsername.charAt(0).toUpperCase() +
                          ticket.submitterUsername.slice(1)}</p>
-                        <p>Assigned to: {ticket.assigneeUsername && 
+                        <p><strong>Assigned to: </strong>{ticket.assigneeUsername && 
                         ticket.assigneeUsername.charAt(0).toUpperCase() + ticket.assigneeUsername.slice(1)}</p>
                   </Item.Description>
                 </Item.Content>
