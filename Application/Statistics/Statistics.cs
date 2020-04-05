@@ -2,9 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
-using Castle.Core.Internal;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Statistics
@@ -13,7 +11,7 @@ namespace Application.Statistics
     {
         public class StatisticsEnvelope
         {
-            public int numManagersWithBios { get; set; }
+            public int NumManagersWithBio { get; set; }
         }
 
         public class Query : IRequest<StatisticsEnvelope>
@@ -33,7 +31,7 @@ namespace Application.Statistics
 
             public async Task<StatisticsEnvelope> Handle(Query request, CancellationToken cancellationToken)
             {
-                var numManagersWithBios = 
+                var numManagersWithBio = 
                     (from user in _context.Users
                         join teamMember in _context.TeamMembers on user.Id equals teamMember.AppUserId
                         where teamMember.IsManager && !(user.Bio == null || user.Bio.Equals(""))
@@ -41,7 +39,7 @@ namespace Application.Statistics
 
                 return new StatisticsEnvelope
                 {
-                    numManagersWithBios = numManagersWithBios
+                    NumManagersWithBio = numManagersWithBio
                 };
             }
         }

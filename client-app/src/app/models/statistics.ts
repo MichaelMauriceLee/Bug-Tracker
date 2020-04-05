@@ -3,5 +3,5 @@
  */
 
 export interface IStatistics {
-    numManagersWithBios: number;
+    numManagersWithBio: number;
 }

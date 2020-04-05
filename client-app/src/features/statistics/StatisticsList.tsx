@@ -13,7 +13,7 @@ const StatisticsList: React.FC  = () => {
     return (
         <Fragment>
             <Statistic>
-                {statistics !== null && <Statistic.Value>{statistics.numManagersWithBios}</Statistic.Value>}
+                {statistics !== null && <Statistic.Value>{statistics.numManagersWithBio}</Statistic.Value>}
                 <Statistic.Label>Managers with filled out bios</Statistic.Label>
             </Statistic>
         </Fragment>
