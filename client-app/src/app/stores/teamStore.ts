@@ -8,11 +8,11 @@ import {RootStore} from './rootStore';
 import {setTeamProps, createMember} from '../common/util/util';
 
 /*
- * Store that contains state and properties related to activities
+ * Store that contains state and properties related to teams
  */
 
 // Limit for the amount of list objects that can show up per page 
-const LIMIT = 2;
+const LIMIT = 3;
 
 export default class TeamStore {
     rootStore: RootStore;

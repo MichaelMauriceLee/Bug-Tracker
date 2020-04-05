@@ -6,6 +6,7 @@ import ModalStore from './modalStore';
 import ProfileStore from './profileStore';
 import TeamStore from './teamStore';
 import TicketStore from './ticketStore';
+import StatisticsStore from './statisticsStore';
 
 /*
  * Store that contains all other stores
@@ -20,6 +21,7 @@ export class RootStore {
     modalStore: ModalStore;
     profileStore: ProfileStore;
     ticketStore: TicketStore;
+    statisticsStore: StatisticsStore;
 
     constructor() {
         this.teamStore = new TeamStore(this);
@@ -28,6 +30,7 @@ export class RootStore {
         this.modalStore = new ModalStore(this);
         this.profileStore = new ProfileStore(this);
         this.ticketStore = new TicketStore(this);
+        this.statisticsStore = new StatisticsStore(this);
     }
 }
 

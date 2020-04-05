@@ -36,7 +36,8 @@ const TeamDashboard: React.FC = () => {
 
     return (
         <Grid>
-            <Grid.Column width={10}>
+            <Grid.Column width = {1}></Grid.Column>
+            <Grid.Column width={11}>
                 {loadingInitial && page === 0 ? (
                     <TeamListItemPlaceholder />
                 ) : (
@@ -50,7 +51,7 @@ const TeamDashboard: React.FC = () => {
                     </InfiniteScroll>
                 )}
             </Grid.Column>
-            <Grid.Column width={6}>
+            <Grid.Column width={4}>
                 <TeamFilters />
                 <Button
                     as={NavLink}
@@ -59,7 +60,7 @@ const TeamDashboard: React.FC = () => {
                     content='Create Team'
                 />
             </Grid.Column>
-            <Grid.Column width={10}>
+            <Grid.Column width={11}>
                 <Loader active={loadingNext} />
             </Grid.Column>
         </Grid>

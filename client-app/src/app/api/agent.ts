@@ -5,6 +5,7 @@ import {toast} from 'react-toastify';
 import {IUser, IUserFormValues} from '../models/user';
 import {IProfile, IPhoto} from '../models/profile';
 import { ITicket, ITicketsEnvelope } from '../models/ticket';
+import { IStatistics } from '../models/statistics';
 
 /*
  * File that specifies REST endpoints and handles communication to the server
@@ -123,9 +124,14 @@ const Tickets = {
     delete: (id: string) => requests.del(`/tickets/${id}`)
 }
 
+const Statistics = {
+    statistics: (): Promise<IStatistics> => requests.get(`/statistics`)
+}
+
 export default {
     Teams,
     User,
     Profiles,
-    Tickets
+    Tickets,
+    Statistics
 };
