@@ -12,7 +12,6 @@ export interface ITicketsEnvelope{
 
 
 
-
 export interface ITicket {  //This is the strucure of our Ticket object at the moment
     id: string;
     title: string;

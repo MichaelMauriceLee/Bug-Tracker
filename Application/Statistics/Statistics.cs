@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Castle.Core.Internal;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -35,7 +36,7 @@ namespace Application.Statistics
                 var numManagersWithBios = 
                     (from user in _context.Users
                         join teamMember in _context.TeamMembers on user.Id equals teamMember.AppUserId
-                        where teamMember.IsManager && !user.Bio.Contains(null)
+                        where teamMember.IsManager && !(user.Bio == null || user.Bio.Equals(""))
                         select user).ToList().Distinct().Count();
 
                 return new StatisticsEnvelope

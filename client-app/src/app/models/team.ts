@@ -1,5 +1,5 @@
 /*
- * Defines the model used for activities
+ * Defines the model used for teams
  */
 
 export interface ITeamsEnvelope {

@@ -1,15 +1,40 @@
-﻿import React from "react"
+﻿import React, {useContext, useEffect, Fragment} from "react"
+import {observer} from "mobx-react-lite"
+import {RootStoreContext} from "../../app/stores/rootStore";
+import {Grid} from "semantic-ui-react";
+import TeamListItemPlaceholder from "../teams/dashboard/TeamListItemPlaceholder";
+import {NavLink} from "react-router-dom";
+import StatisticsList from "./StatisticsList";
+import StatisticsHeader from "./StatisticsHeader";
 
-/*
- * TODO
- */
+const StatisticsDashboard: React.FC = () => {
+    const rootStore = useContext(RootStoreContext);
+    const {
+        loadStatistics,
+        loadingInitial,
+    } = rootStore.statisticsStore;
 
-const StatisticsDashboard = () => {
+    useEffect(() => {
+        loadStatistics();
+    }, [loadStatistics]);
+
     return (
-        <header>
-            TO BE IMPLEMENTED LATER
-        </header>
+        <Grid>
+            <Grid.Column width={1}></Grid.Column>
+            <Grid.Column width={11}>
+                {loadingInitial ? (
+                    <TeamListItemPlaceholder/> //todo change this out for a better placeholder
+                ) : (
+                    <Fragment>
+                        <StatisticsHeader/>
+                        <StatisticsList/>
+                    </Fragment>
+                )}
+            </Grid.Column>
+            <Grid.Column width={4}>
+            </Grid.Column>
+        </Grid>
     )
 }
 
-export default StatisticsDashboard
+export default observer(StatisticsDashboard)
