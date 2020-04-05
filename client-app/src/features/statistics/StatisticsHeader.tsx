@@ -1,5 +1,6 @@
 ﻿import React from "react"
 import {Header, Image, Segment} from "semantic-ui-react"
+import GeneralStatisticsList from "./GeneralStatisticsList"
 
 const StatisticsHeader: React.FC = () => {
     return (
@@ -11,6 +12,7 @@ const StatisticsHeader: React.FC = () => {
                 </Header.Subheader>
             </Header>
             <Image src={'/assets/spicy.jpg'} fluid/>
+            <GeneralStatisticsList />
         </Segment>
     )
 }
