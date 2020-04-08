@@ -23,11 +23,10 @@ const TicketDashboard = () => {
 
     return (
         <Grid>
-            <Grid.Column width = {1}></Grid.Column>
-            <Grid.Column width = {11}>
+            <Grid.Column width = {10}>
                 <TicketList />
             </Grid.Column>
-            <Grid.Column width = {4}>
+            <Grid.Column width = {6}>
                 <TicketFilters />
                 <Button
                     as = {Link} to="/createTicket"

@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Form as FinalForm, Field} from 'react-final-form';
-import {Form, Button, Header, Divider} from 'semantic-ui-react';
+import {Form, Button, Header} from 'semantic-ui-react';
 import TextInput from '../../app/common/form/TextInput';
 import {RootStoreContext} from '../../app/stores/rootStore';
 import {IUserFormValues} from '../../app/models/user';
@@ -20,7 +20,7 @@ const validate = combineValidators({
 
 const LoginForm = () => {
     const rootStore = useContext(RootStoreContext);
-    const {login, loading} = rootStore.userStore;
+    const {login} = rootStore.userStore;
     return (
         <FinalForm
             onSubmit={(values: IUserFormValues) =>

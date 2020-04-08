@@ -4,7 +4,6 @@ import {ITeam} from '../../../app/models/team';
 import TeamMemberList from './TeamMemberList';
 import { Link } from 'react-router-dom';
 import { RootStoreContext } from '../../../app/stores/rootStore';
-import {v4 as uuid} from "uuid";
 import { observer } from 'mobx-react-lite';
 
 /*
@@ -13,7 +12,6 @@ import { observer } from 'mobx-react-lite';
  */
 
 const TeamDetailedInfo: React.FC<{ team: ITeam }> = ({team}) => {
-    const manager = team.members.filter(x => x.isManager)[0];
     const rootStore = useContext(RootStoreContext);
     const { belongTeam, unbelongTeam, loading, deleteTeam, submitting } = rootStore.teamStore;
     return (

@@ -1,8 +1,6 @@
 ﻿import {RootStore} from "./rootStore";
-import {action, observable, reaction, runInAction} from "mobx";
-import {ITeam} from "../models/team";
+import {action, observable, runInAction} from "mobx";
 import agent from "../api/agent";
-import {setTeamProps} from "../common/util/util";
 import { IStatistics } from "../models/statistics";
 
 

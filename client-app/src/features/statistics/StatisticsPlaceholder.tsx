@@ -1,5 +1,5 @@
 ﻿import React, {Fragment} from 'react';
-import {Segment, Button, Placeholder} from 'semantic-ui-react';
+import {Segment, Placeholder} from 'semantic-ui-react';
 
 /*
  * React component used as a placeholder for statistics while loading

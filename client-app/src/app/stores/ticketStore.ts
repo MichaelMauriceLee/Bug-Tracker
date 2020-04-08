@@ -1,6 +1,5 @@
 ﻿import {RootStore} from "./rootStore";
 import {configure, observable, runInAction, action, computed, reaction} from "mobx";
-import { SyntheticEvent } from "react";
 import { ITicket } from '../models/ticket'
 import agent from "../api/agent";
 import { history } from "../..";
@@ -105,7 +104,6 @@ export default class TicketStore {
             (a, b) => b.submissionDate.getTime() - a.submissionDate.getTime()
         )
         return Object.entries(sortedTickets.reduce((tickets, ticket) => {
-            const date = ticket.submissionDate.toISOString().split('T')[0];
             const category = ticket.category;
             tickets[category] = tickets[category] ? [...tickets[category], ticket] : [ticket];
             return tickets;
