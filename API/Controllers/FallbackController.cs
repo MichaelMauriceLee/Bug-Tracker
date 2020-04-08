@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 /*
  * Delivers static files found in the wwwroot folder of this library
  *
- * TODO check this is correct
  */
 
 namespace API.Controllers

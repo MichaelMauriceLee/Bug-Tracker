@@ -12,7 +12,7 @@ import {setTeamProps, createMember} from '../common/util/util';
  */
 
 // Limit for the amount of list objects that can show up per page 
-const LIMIT = 3;
+const LIMIT = 9000;
 
 export default class TeamStore {
     rootStore: RootStore;
