@@ -44,7 +44,7 @@ const GeneralStatisticsList: React.FC = () => {
                 <Statistic>
                     {statistics !== null &&
                     <Statistic.Value>{statistics.numManagersWithPhoto}</Statistic.Value>}
-                    <Statistic.Label>Number of Managers with filled out bios</Statistic.Label>
+                    <Statistic.Label>Number of Managers who uploaded photos</Statistic.Label>
                 </Statistic>
             </Statistic.Group>
         </Fragment>
