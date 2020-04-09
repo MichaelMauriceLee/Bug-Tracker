@@ -30,9 +30,9 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
     const rootStore = useContext(RootStoreContext);
 
     //TEAM STORE ITEMS
-    const {loadTeam, loadingInitial} = rootStore.teamStore;
+    const {loadTeam} = rootStore.teamStore;
     const [team, setTeam] = useState(new TheTeam());
-    const [loadingLocal, setLoading] = useState(false);   //local state for the loading
+    const [, setLoading] = useState(false);   //local state for the loading
 
     useEffect(() => {
         if(ticket.teamId){
@@ -66,10 +66,10 @@ const TicketDetailedHeader: React.FC<{ticket: ITicket}> = ({ ticket }) => {
     var isOnTeam = false;
     const manager = team.members.filter(x => x.isManager)[0];
     const teamMember = team.members.filter(x => x.username === user.username)[0];
-    if(teamMember!=undefined){
+    if(teamMember!==undefined){
       isOnTeam = true;
     }
-    if(manager != undefined){
+    if(manager !== undefined){
       managerUserName = manager.username;
     }
 

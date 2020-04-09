@@ -1,8 +1,7 @@
 ﻿import React from 'react';
-import { Item, Button, Segment, Icon, Label } from 'semantic-ui-react';
+import { Item, Button, Segment } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { ITeam } from '../../../app/models/team';
-import { format } from 'date-fns';
 
 const TeamListItem: React.FC<{ team: ITeam }> = ({ team }) => {
     return (

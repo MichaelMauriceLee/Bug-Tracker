@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Menu, Container, Button, Dropdown, Image} from 'semantic-ui-react';
+import {Menu, Container, Dropdown, Image} from 'semantic-ui-react';
 import {observer} from 'mobx-react-lite';
 import {NavLink, Link} from 'react-router-dom';
 import {RootStoreContext} from '../../app/stores/rootStore';
@@ -13,11 +13,20 @@ const NavBar: React.FC = () => {
     const {user, logout} = rootStore.userStore;
     return (
         <Menu fixed='top' inverted>
-            <Menu.Item header as={NavLink} exact to='/'>
-                <img src='/assets/logo.png' alt='logo' style={{marginRight: 0}}/>
+            <Container>
+            <Menu.Item header as={NavLink} exact to={'/'}>
+                <img src='/assets/logo.png' alt='logo' style={{marginRight: 10}} />
                 Bug Tracker
             </Menu.Item>
-            <Container>
+            <Menu.Item header as={NavLink} exact to={'/dashboard'}>
+                My Dashboard
+            </Menu.Item>
+            <Menu.Item header as={NavLink} exact to={'/teams'}>
+                My Teams
+            </Menu.Item>
+            <Menu.Item header as={NavLink} exact to={'/tickets'}>
+                My Tickets
+            </Menu.Item>
                 {user && (
                     <Menu.Item position='right'>
                         <Image avatar spaced='right' src={user.image || '/assets/user.png'}/>

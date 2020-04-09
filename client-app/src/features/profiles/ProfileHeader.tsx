@@ -3,12 +3,7 @@ import {
     Segment,
     Item,
     Header,
-    Button,
-    Grid,
-    Statistic,
-    Divider,
-    Reveal
-} from 'semantic-ui-react';
+    Grid} from 'semantic-ui-react';
 import {IProfile} from '../../app/models/profile';
 import {observer} from 'mobx-react-lite';
 
