@@ -119,6 +119,9 @@
     <_ContentIncludedByDefault Remove="wwwroot\static\js\2.cca250f8.chunk.js.map" />
     <_ContentIncludedByDefault Remove="wwwroot\static\js\main.bcd958a8.chunk.js" />
     <_ContentIncludedByDefault Remove="wwwroot\static\js\main.bcd958a8.chunk.js.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\precache-manifest.0b4a88837058fc7667cb9de7d8985c0e.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\main.b3c9327c.chunk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\main.b3c9327c.chunk.js.map" />
   </ItemGroup>
 
   <PropertyGroup>
